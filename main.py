@@ -1,30 +1,30 @@
-import pygame
+import pygame as pg
 
-pygame.init()
+pg.init()
 
 # # Create a window (can I make it the size of the screen?)
-DISPLAY_WIDTH = 500
-DISPLAY_HEIGHT = 300
+DISPLAY_WIDTH = 800
+DISPLAY_HEIGHT = 600
 DISPLAY_SIZE = [DISPLAY_WIDTH, DISPLAY_HEIGHT]
 
-display = pygame.display.set_mode(DISPLAY_SIZE)
+display = pg.display.set_mode(DISPLAY_SIZE)
 
 run_game = True
 
-clock = pygame.time.Clock()
+clock = pg.time.Clock()
 
 black = [0, 0, 0]
 
 while run_game:
     display.fill(black)
 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
+    for event in pg.event.get():
+        if event.type == pg.QUIT:
             run_game = False
 
-    pygame.display.update()
+    pg.display.update()
     clock.tick(45)
-pygame.quit()
+pg.quit()
 quit()
 
 # draw a rectangle that marks the boundary of the screen
@@ -86,3 +86,5 @@ quit()
 # programming, and how it was employed to
 # control each of the objects created in their own
 # words
+
+# double check everything with the pdf to make sure I missed nothing
