@@ -1,70 +1,50 @@
+import pygame as pg
 class Shooter:
     '''
-    class for Shooter. Your Shooter can be a shape of
-    your choice.
+    Class representing the Shooter.
 
-    The Shooter class contains the following variables, all of which should be private. You may decide
-    whether the variables below are class or instance variables. However, you will need to defend your
-    choice in your comments.
-    (i) Variables for the coordinates of the shooter (
     '''
-    pass
-
+    # need to defend my choice of instance variables versus class variables
     def __init__(self, x, y, color, speed):
         '''
         Constructor for the Shooter class.
 
-        The constructor should be used to set up the Shooter class. This might include the coordinates,
-        colour and speed of the Shooter as defined above
         '''
-        pass
+        self.__x = x
+        self.__y = y
+        self.__width = 10
+        self.__height = 10
+        self.__color = color
+        self.__speed = speed
+        self.coordinates = [self.__x, self.__y]
 
     def __str__(self):
         '''
-        Returns a string representation of the Shooter.
+        Returns a string representation of the Shooter including its color and coordinates.
 
-        This method should return a string representation of the Shooter.
-
-        Create a string representation: when the object is printed to the screen, it should contain readerfriendly information concerning the objects instance. This should include the colour and coordinates of the Shooter
         '''
-        pass
+        return f'Shooter: {self.__color}. Location: ({self.__x},{self.__y})'
 
     def draw(self, display):
         '''
         Draws the Shooter on the screen.
 
-        This method should draw the Shooter on the screen.
-
-        This method should draw the Shooter on the screen.
-
-        This method draw the shooter on the display window. To draw the shooter, you will need to make
-        use of pygame features (e.g. rectangles, circles, lines). Note you should not need to draw the
-        shooter in other methods.
         '''
-        pass
+        # can make this into another shape later if I want
+        pg.draw.rect(display, self.__color, (self.__x, self.__y, self.__width, self.__height))
 
     def move_up(self, moveup_trigger):
         """
         This method moves the shooter up.
-
-        This method should move the shooter left or up, depending on which method you choose to
-        implement. The speed the shooter moves should be defined in an instance variable, containing a
-        value of your choice. Note the following constraints:
-        • The shooter should not be able to move off the left of the screen OR the top of the screen
-        (depending on which method has been implemented).
-        Note that you should not draw the shooter in this method
+        The shooter cannot move off the screen.
         
         """
         pass
 
     def move_down(self, movedown_trigger):
         """
-        This method should move the shooter right or down, depending on which method you choose to
-        implement. The speed the shooter moves should be defined in an instance variable, containing a
-        value of your choice. Note the following constraints:
-        • The shooter should not be able to move off the right of the screen OR the bottom of the
-        screen (depending on which method has been implemented).
-        Note that you should not draw the shooter in this method.
+        This method moves the shooter down.
+        The shooter cannot move off the screen.
 
         """
         pass
@@ -73,53 +53,75 @@ class Shooter:
         """
         This method returns the x coordinate of the shooter.
 
-        This method should return the x coordinate of the shooter.
         """
-        pass
-
-    def get_y(self):
-        """
-        This method returns the y coordinate of the shooter.
-
-        This method should return the y coordinate of the shooter.
-        """
-        pass
+        return self.__x
 
     def set_x(self, x):
         """
         This method sets the x coordinate of the shooter.
 
-        This method should set the x coordinate of the shooter.
         """
-        pass
+        self._x = x
+
+    def get_y(self):
+        """
+        This method returns the y coordinate of the shooter.
+
+        """
+        return self.__y
 
     def set_y(self, y):
         """
         This method sets the y coordinate of the shooter.
 
-        This method should set the y coordinate of the shooter.
         """
-        pass
+        self.__y = y
 
     def get_color(self):
         """
-        This method returns the colour of the shooter.
+        This method returns the color of the shooter.
 
-        This method should return the colour of the shooter.
         """
-        pass
+        return self.__color
 
     def set_color(self, color):
         """
-        This method sets the colour of the shooter.
+        This method sets the color of the shooter.
 
-        This method should set the colour of the shooter.
         """
-        pass
+        self.__color = color
 
-    
+    def get_speed(self):
+        """
+        This method returns the speed of the shooter.
 
-# The shooter should only be able to move horizontally OR vertically. It should not move in both
-# directions.
-# The shooter should not be able to move outside the bounds of the window/screen.
-# The shooter should not be able to move off the screen
+        """
+        return self.__speed
+
+    def set_speed(self, speed):
+        """
+        This method sets the speed of the shooter.
+
+        """
+        self.__speed = speed
+
+    def get_size(self):
+        """
+        This method returns the size of the shooter.
+
+        """
+        return self.__width, self.__height
+
+    def set_size(self, width, height):
+        """
+        This method sets the size of the shooter.
+
+        """
+        self.__width = width
+        self.__height = height
+
+    x = property(get_x, set_x)
+    y = property(get_y, set_y)
+    color = property(get_color, set_color)
+    speed = property(get_speed, set_speed)
+    size = property(get_size, set_size)
