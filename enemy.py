@@ -1,74 +1,50 @@
+import pygame as pg
 class Enemy:
     '''
-    class construct for drawing the Enemy.
+    Class representing the Enemy.
 
-    The Enemy class contains the following variables, all of which should be private. You may decide
-    whether the variables below are class or instance variables. However, you will need to defend your
-    choice in your comments.
-    (i) Variables for the coordinates of the enemy (including x, y, radius or size in width/height)
-    (ii) Variables for the enemy speed on the x and y axis
     '''
-    pass
+    # need to defend my choice of instance variables versus class variables
 
     def __init__(self, x, y, color, size, speed_x, speed_y):
         '''
         Constructor for the Enemy class.
 
-        The constructor should be used to set up the Enemy class. This might include the coordinates,
-        colour and speed of the Enemy as defined above
-        Your implementation may be different, depending on
-        which shape you decide to use
-
         size can be passed in as a list or a single value
         '''
-        pass
+        self.__x = x
+        self.__y = y
+        # commit on this later
+        self.__size = size if isinstance(size, list) else [size, size]
+        self.__color = color
+        self.__speed_x = speed_x
+        self.__speed_y = speed_y
+        self.coordinates = [self.__x, self.__y]
 
     def __str__(self):
         '''
         Returns a string representation of the Enemy.
 
-        This method should return a string representation of the Enemy.
-
-        Create a string representation: You should ensure that when the object is printed to the screen, it
-        contains reader-friendly information concerning the objects instance, including the color and
-        position of the Enemy
         '''
-        pass
+        return f'Enemy: {self.__color}. Location: ({self.__x},{self.__y})'
 
     def draw(self, display):
         '''
         Draws the Enemy on the screen.
 
-        This method should draw the Enemy on the screen.
-
-        This method should draw the Enemy on the screen.
-
-        This method draw the enemy on the display window. The display window is passed in with this
-        method. To draw the enemy, you will need to make use of pygame features (e.g. rectangle, circle or
-        line). Note you should not need to draw the enemy in other methods
         '''
-        pass
+        # can make this into another shape later if I want
+        pg.draw.rect(display, self.__color, (self.__x, self.__y, self.__size))
 
-    def move_left(self, left_bound, right_bound, top_bound, bottom_bound):
+    def move(self, left_bound, right_bound, top_bound, bottom_bound):
         """
-        This method moves the enemy left.
+        This method moves the enemy diagonally.
 
-        This method should move the enemy left or right, depending on which method you choose to
-        implement. The speed the enemy moves should be defined in an instance variable, containing a
-        value of your choice. Note the following constraints:
-        • The enemy should not be able to move off the left of the screen OR the right of the screen
-        (depending on which method has been implemented).
-        • The enemy should not be able to move off the top of the screen OR the bottom of the screen
-        (depending on which method has been implemented).
-        Note that you should not draw the enemy in this method
+        Speed defined in an instance variable
+        The enemy cannot move off the screen.
+        The enemy should change direction when it reaches the edge of the screen.
+        Take into account the size of the enemy.
 
-        This method should move the enemy diagonally. The speed the enemy moves should be defined in
-        instance variables, containing a value of your choice. Note the following constraints for the enemy:
-        • The enemys movement should be constrained within the bounds defined in the parameters
-        left_bound, right_bound, top_bound, bottom_bound.
-        Therefore, the enemy should bounce (i.e. change direction) once it collides with the
-        left_bound, right_bound, top_bound, or bottom_bound. You should take into account
-        the size of the enemy when dealing with collisions
         """
         pass
 
@@ -76,48 +52,89 @@ class Enemy:
         '''
         Returns the x coordinate of the Enemy.
 
-        This method should return the x coordinate of the Enemy.
         '''
-        pass
-
-    def get_y(self):
-        '''
-        Returns the y coordinate of the Enemy.
-
-        This method should return the y coordinate of the Enemy.
-        '''
-        pass
-
-    def get_size(self):
-        '''
-        Returns the size of the Enemy.
-
-        This method should return the size of the Enemy.
-        '''
-        pass
+        return self.__x
 
     def set_x(self, x):
         '''
         Sets the x coordinate of the Enemy.
 
-        This method should set the x coordinate of the Enemy.
         '''
-        pass
+        self.__x = x
+
+    def get_y(self):
+        '''
+        Returns the y coordinate of the Enemy.
+
+        '''
+        return self.__y
 
     def set_y(self, y):
         '''
         Sets the y coordinate of the Enemy.
 
-        This method should set the y coordinate of the Enemy.
         '''
-        pass
+        self.__y = y
+
+    def get_size(self):
+        '''
+        Returns the size of the Enemy.
+
+        '''
+        return self.__size
 
     def set_size(self, size):
         '''
         Sets the size of the Enemy.
 
-        This method should set the size of the Enemy.
         '''
-        pass
+        self.__size = size if isinstance(size, list) else [size, size]
 
-# The enemy should be able to “bounce” off a protected wall, which is marked by an inner rectangle drawn inside of the screen (i.e. the pygame display window).
+    def get_color(self):
+        '''
+        Returns the color of the Enemy.
+
+        '''
+        return self.__color
+
+    def set_color(self, color):
+        '''
+        Sets the color of the Enemy.
+
+        '''
+        self.__color = color
+
+    def get_speed_x(self):
+        '''
+        Returns the speed of the Enemy in the x direction.
+
+        '''
+        return self.__speed_x
+
+    def set_speed_x(self, speed_x):
+        '''
+        Sets the speed of the Enemy in the x direction.
+
+        '''
+        self.__speed_x = speed_x
+
+    def get_speed_y(self):
+        '''
+        Returns the speed of the Enemy in the y direction.
+
+        '''
+        return self.__speed_y
+
+    def set_speed_y(self, speed_y):
+        '''
+        Sets the speed of the Enemy in the y direction.
+
+        '''
+        self.__speed_y = speed_y
+
+    x = property(get_x, set_x)
+    y = property(get_y, set_y)
+    size = property(get_size, set_size)
+    color = property(get_color, set_color)
+    speed_x = property(get_speed_x, set_speed_x)
+    speed_y = property(get_speed_y, set_speed_y)   
