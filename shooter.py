@@ -12,11 +12,12 @@ class Shooter:
         '''
         self.__x = x
         self.__y = y
-        self.__width = 10
-        self.__height = 10
+        self.__width = 20
+        self.__height = 20
+        self.__size = [self.__width, self.__height]
         self.__color = color
         self.__speed = speed
-        self.coordinates = [self.__x, self.__y]
+        self.__coordinates = [self.__x, self.__y]
 
     def __str__(self):
         '''
@@ -31,7 +32,8 @@ class Shooter:
 
         '''
         # can make this into another shape later if I want
-        pg.draw.rect(display, self.__color, (self.__x, self.__y, self.__width, self.__height))
+        shooter_rect = pg.Rect(self.__coordinates, self.__size)
+        pg.draw.rect(display, self.__color, shooter_rect)
 
     def move_up(self, moveup_trigger):
         """
@@ -39,7 +41,11 @@ class Shooter:
         The shooter cannot move off the screen.
         
         """
-        pass
+        if moveup_trigger[pg.K_UP]:
+            self.__y -= self.__speed
+            if self.__y < 0:
+                self.__y = 0
+            self.__coordinates = [self.__x, self.__y]
 
     def move_down(self, movedown_trigger):
         """
@@ -47,7 +53,11 @@ class Shooter:
         The shooter cannot move off the screen.
 
         """
-        pass
+        if movedown_trigger[pg.K_DOWN]:
+            self.__y += self.__speed
+            if self.__y > 600 - self.__height: # I don't want to hard code this
+                self.__y = 600 - self.__height
+            self.__coordinates = [self.__x, self.__y]
 
     def get_x(self):
         """
@@ -76,6 +86,20 @@ class Shooter:
 
         """
         self.__y = y
+
+    def get_coordinates(self):
+        """
+        This method returns the coordinates of the shooter.
+
+        """
+        return self.__coordinates
+
+    def set_coordinates(self, coordinates):
+        """
+        This method sets the coordinates of the shooter.
+
+        """
+        self.__coordinates = coordinates
 
     def get_color(self):
         """
@@ -122,6 +146,7 @@ class Shooter:
 
     x = property(get_x, set_x)
     y = property(get_y, set_y)
+    coordinates = property(get_coordinates, set_coordinates)
     color = property(get_color, set_color)
     speed = property(get_speed, set_speed)
     size = property(get_size, set_size)
