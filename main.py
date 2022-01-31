@@ -1,31 +1,85 @@
 import pygame as pg
+from shooter import Shooter
+from enemy import Enemy
+from bullet import Bullet
 
 pg.init()
 
 # # Create a window (can I make it the size of the screen?)
-DISPLAY_WIDTH = 800
-DISPLAY_HEIGHT = 600
-DISPLAY_SIZE = [DISPLAY_WIDTH, DISPLAY_HEIGHT]
+DISPLAY_WIDTH, DISPLAY_HEIGHT = 900, 600
+DISPLAY_SIZE = (DISPLAY_WIDTH, DISPLAY_HEIGHT)
+DISPLAY = pg.display.set_mode(DISPLAY_SIZE)
+pg.display.set_caption("Shooter")
 
-display = pg.display.set_mode(DISPLAY_SIZE)
+# Colours
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+YELLOW = (255, 255, 0)
+RED = (255, 0, 0)
 
-run_game = True
+# Border
+BORDER = pg.Rect(DISPLAY_WIDTH // 2 - 5, 0, 10, DISPLAY_HEIGHT) # 90 minute video for beginners
 
-clock = pg.time.Clock()
+# Framerate
+FPS = 60
 
-black = [0, 0, 0]
+# Shooter Variables
 
-while run_game:
-    display.fill(black)
+shooter = Shooter(100,100, BLACK, 5)
 
-    for event in pg.event.get():
-        if event.type == pg.QUIT:
-            run_game = False
+# Enemy Variables
+enemy = Enemy(500,100, BLACK, [20, 30], 10, 10)
 
+# Bullet Variables
+bullet = Bullet([10,5], RED, 20)
+
+# Available to us because of the Rect object
+LEFT_BOUNDARY = BORDER.right
+RIGHT_BOUNDARY = DISPLAY_WIDTH
+TOP_BOUNDARY = 0
+BOTTOM_BOUNDARY = DISPLAY_HEIGHT
+
+def draw_window():
+    """
+    Method to draw the window.
+    """
+    DISPLAY.fill(WHITE) # 90 minute video for beginners
+    # HERE I DRAW TO THE SCREEN
+    pg.draw.rect(DISPLAY, WHITE, BORDER)
+    shooter.draw(DISPLAY)
+    enemy.draw(DISPLAY)
+    if bullet.check_moving():
+        bullet.draw(DISPLAY)
     pg.display.update()
-    clock.tick(45)
-pg.quit()
-quit()
+
+def main():
+    clock = pg.time.Clock()
+    run_game = True
+    while run_game:
+        clock.tick(FPS) # do I do this at the start of the end?
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                run_game = False
+
+        keys_pressed = pg.key.get_pressed()
+        shooter.move_up(keys_pressed)
+        shooter.move_down(keys_pressed)
+        enemy.move(LEFT_BOUNDARY, RIGHT_BOUNDARY, TOP_BOUNDARY, BOTTOM_BOUNDARY)
+        if not bullet.check_moving() and keys_pressed[pg.K_SPACE]:
+            bullet.start(shooter.coordinates)
+        if bullet.check_moving():
+            bullet.move_right()
+        if bullet.wall_collision():
+            bullet.stop()
+
+        draw_window()
+    pg.quit()
+    quit()
+
+if __name__ == '__main__':
+    main()
+
+# test all my getters and setters
 
 # draw a rectangle that marks the boundary of the screen
 
