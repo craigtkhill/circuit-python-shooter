@@ -19,7 +19,7 @@ class Enemy:
         self.__color = color
         self.__speed_x = speed_x
         self.__speed_y = speed_y
-        self.coordinates = [self.__x, self.__y]
+        self.__coordinates = [self.__x, self.__y]
 
     def __str__(self):
         '''
@@ -34,7 +34,8 @@ class Enemy:
 
         '''
         # can make this into another shape later if I want
-        pg.draw.rect(display, self.__color, (self.__x, self.__y, self.__size))
+        enemy_rect = pg.Rect(self.__coordinates, self.__size)
+        pg.draw.rect(display, self.__color, enemy_rect)
 
     def move(self, left_bound, right_bound, top_bound, bottom_bound):
         """
@@ -46,7 +47,25 @@ class Enemy:
         Take into account the size of the enemy.
 
         """
-        pass
+        self.__x += self.__speed_x
+        self.__y += self.__speed_y
+        # check for left bound
+        if self.__x < left_bound:
+            self.__speed_x = -self.__speed_x
+            self.__x = left_bound
+        # check for right bound
+        if self.__x > right_bound - self.__size[0]:
+            self.__speed_x = -self.__speed_x
+            self.__x = right_bound - self.__size[0]
+        # check for top bound
+        if self.__y < top_bound:
+            self.__speed_y = -self.__speed_y
+            self.__y = top_bound
+        # check for bottom bound
+        if self.__y > bottom_bound - self.__size[1]:
+            self.__speed_y = -self.__speed_y
+            self.__y = bottom_bound - self.__size[1]
+        self.__coordinates = [self.__x, self.__y]
 
     def get_x(self):
         '''
