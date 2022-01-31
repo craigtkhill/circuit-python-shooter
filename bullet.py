@@ -6,33 +6,34 @@ class Bullet:
 
     '''
 
-    def __init__(self, x, y, size, color, speed):
+    def __init__(self, size, color, speed): # width, height
         '''
         Constructor for the Bullet class.
 
         '''
-        self.__x = x
-        self.__y = y
+        self.__x = 0
+        self.__y = 0
         # commment again
         self.__size = size if isinstance(size, list) else [size, size]
         self.__color = color
         self.__speed = speed
         self.__moving = False
-        self.__coordinates = [x, y]
+        self.__coordinates = [self.__x, self.__y]
 
     def __str__(self):
         '''
         Returns a string representation of the Bullet.
 
         '''
-        return f'Bullet: {self.__color}. Location ({self.__x, self.__y})'
+        return f'Bullet: {self.__color}. Location: ({self.__x, self.__y})'
 
     def draw(self, display):
         '''
         Draws the Bullet on the screen.
 
         '''
-        pg.draw.rect(display, self.__color, (self.__coordinates, self.__size))
+        bullet_rect = pg.Rect(self.__coordinates, self.__size)
+        pg.draw.rect(display, self.__color, bullet_rect)
 
     def move_right(self):
         """
@@ -44,7 +45,9 @@ class Bullet:
         move horizontally, in the direction the enemy is located, if the shooter is located on the left/right hand side of the screen.
         starting coordinates in the start method.
         """
-        pass
+        self.__x += self.__speed
+        self.__coordinates = [self.__x, self.__y]
+
 
     def start(self, coordinates):
         """
@@ -53,7 +56,10 @@ class Bullet:
         coordinates (sequence): a list or tuple determining the coordinates from which to start the bullet. You may assume the coordinates are in the correct format.
         set the Boolean variable that determines whether the Bullet is moving to True
         """
-        pass
+        self.__x = coordinates[0]
+        self.__y = coordinates[1]
+        self.__coordinates = [self.__x, self.__y]
+        self.__moving = True
 
     def stop(self):
         """
@@ -61,7 +67,8 @@ class Bullet:
         Set the coordinates of the bullet so that it is not visible on the display window
         Set the instance variable that determines whether the bullet is moving to False
         """
-        pass
+        self.__moving = False
+        self.coordinates = [0, 0]
 
     def check_moving(self):
         """
@@ -79,7 +86,11 @@ class Bullet:
         • If the bullet has collided with the wall behind the enemy, the variable to control the bullet moving should be set to False. Additionally, the method should return True to determine that the bullet has collided with the wall.
         • If the bullet has not collided with the wall behind the enemy, the variable controlling the bullet moving should be set to True. Additionally, the method should return False to determine that the bullet has not collided with the wall.
         """
-        pass
+        if self.__coordinates[0] > 900:
+            self.__moving = False
+            return True
+        else:
+            return False
 
     def get_coordinates(self):
         """
