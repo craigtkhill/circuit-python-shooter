@@ -1,23 +1,31 @@
+# getters and setters
+# doctrings
+# decorators / remove uncessary getters and setters
+# capitalise classes
+
 import pygame as pg
 class Shooter:
-    '''
-    Class representing the Shooter.
+    """
+    A class to represent a shooter
 
-    '''
-    # need to defend my choice of instance variables versus class variables
+    """
+
     def __init__(self, x, y, color, speed):
         '''
         Constructor for the Shooter class.
-
         '''
+        # Instance variable - multiple shooters can instantiated with different coordinates
+        # allows flexibility if we want to introduce more shooters (multiplayer game)
         self.__x = x
         self.__y = y
+        self.__coordinates = [self.__x, self.__y]
+        # Instance variable as getters and setters can change the size of the individual Shooters
         self.__width = 20
         self.__height = 20
         self.__size = [self.__width, self.__height]
+        # Instance variables - color and speed can be changed for each Shooter
         self.__color = color
         self.__speed = speed
-        self.__coordinates = [self.__x, self.__y]
 
     def __str__(self):
         '''
@@ -31,33 +39,56 @@ class Shooter:
         Draws the Shooter on the screen.
 
         '''
-        # can make this into another shape later if I want
+        # the rectangular coordinates and size are stored in a variable
+        # (https://www.pygame.org/docs/ref/rect.html)
         shooter_rect = pg.Rect(self.__coordinates, self.__size)
+        # pygame draws the rectangle to the display
         pg.draw.rect(display, self.__color, shooter_rect)
 
     def move_up(self, moveup_trigger):
         """
         This method moves the shooter up.
         The shooter cannot move off the screen.
+
+        a sequence of boolean values representing the state of every key on the keyboard
+        Parameters
+        ----------
+            moveup_trigger : sequence of boolean values representing the state of the keys on the keyboard
+
+        Returns
+        -------
         
         """
+        # if the up arrow is pressed the y coordinate instance variable is reversed
+        # by reassigning it to the value of itself minus the speed
         if moveup_trigger[pg.K_UP]:
             self.__y -= self.__speed
+        # if the y coordinate is less than zero, the y coordinate is set to 0
+        # preventing the shooter from going off the screen
             if self.__y < 0:
                 self.__y = 0
+        # the coordinates of the shooter are updated with the new value for y
             self.__coordinates = [self.__x, self.__y]
 
-    def move_down(self, movedown_trigger):
+    def move_down(self, display_height, movedown_trigger):
         """
         This method moves the shooter down.
         The shooter cannot move off the screen.
 
         """
+        # if the down arrow is pressed the y coordinate instance variable is increased
+        # by reassigning it to the value of itself plus the speed
         if movedown_trigger[pg.K_DOWN]:
             self.__y += self.__speed
-            if self.__y > 600 - self.__height: # I don't want to hard code this
-                self.__y = 600 - self.__height
+        # if the y coordinate is less greater than the height of the display
+        # taking into account its height, the y coordinate is set to the height of
+        # the display, minus its own height
+            if self.__y > display_height - self.__height:
+                self.__y = display_height - self.__height
+        # the coordinates of the shooter are updated with the new value for y 
             self.__coordinates = [self.__x, self.__y]
+
+# Getters, Setters and Property constructs made below
 
     def get_x(self):
         """
