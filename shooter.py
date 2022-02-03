@@ -1,7 +1,5 @@
-# getters and setters
 # doctrings
-# decorators / remove uncessary getters and setters
-# capitalise classes
+# comment on decorators and code
 
 import pygame as pg
 class Shooter:
@@ -89,95 +87,184 @@ class Shooter:
             self.__coordinates = [self.__x, self.__y]
 
 # Getters, Setters and Property constructs made below
+####### WHAT ARE THE ADVANTAGES OF DECORATORS?
+# (https://stackoverflow.com/questions/52899509/is-there-an-advantage-of-using-the-property-decorator-compared-to-the-property-c)
 
-    def get_x(self):
-        """
-        This method returns the x coordinate of the shooter.
-
-        """
-        return self.__x
-
-    def set_x(self, x):
-        """
-        This method sets the x coordinate of the shooter.
-
-        """
-        self._x = x
-
-    def get_y(self):
-        """
-        This method returns the y coordinate of the shooter.
-
-        """
-        return self.__y
-
-    def set_y(self, y):
-        """
-        This method sets the y coordinate of the shooter.
-
-        """
-        self.__y = y
-
-    def get_coordinates(self):
+    @property
+    def coordinates(self):
         """
         This method returns the coordinates of the shooter.
 
         """
         return self.__coordinates
 
-    def set_coordinates(self, coordinates):
+# (https://stackoverflow.com/questions/7371244/using-self-as-default-value-for-a-method)
+
+    @coordinates.setter
+    def coordinates(self, x=None, y=None):
         """
         This method sets the coordinates of the shooter.
 
-        """
-        self.__coordinates = coordinates
-
-    def get_color(self):
-        """
-        This method returns the color of the shooter.
+        The default values are the instance variables of the shooter.
 
         """
-        return self.__color
+        if x is None:
+            x = self.__x
+        else:
+            self.__x = x
+        if y is None:
+            y = self.__y
+        else:
+            self.__y = y
 
-    def set_color(self, color):
-        """
-        This method sets the color of the shooter.
+        self.__coordinates = [self.__x, self.__y]
 
-        """
-        self.__color = color
-
-    def get_speed(self):
-        """
-        This method returns the speed of the shooter.
-
-        """
-        return self.__speed
-
-    def set_speed(self, speed):
-        """
-        This method sets the speed of the shooter.
-
-        """
-        self.__speed = speed
-
-    def get_size(self):
+    @property
+    def size(self):
         """
         This method returns the size of the shooter.
 
         """
-        return self.__width, self.__height
+        return self.__size
 
-    def set_size(self, width, height):
+    @size.setter
+    def size(self, width=None, height=None):
         """
         This method sets the size of the shooter.
 
         """
-        self.__width = width
-        self.__height = height
+        if width is None:
+            width = self.__width
+        else:
+            self.__width = width
+        if height is None:
+            height = self.__height
+        else:
+            self.__height = height
+        self.__size = [self.__width, self.__height]
 
-    x = property(get_x, set_x)
-    y = property(get_y, set_y)
-    coordinates = property(get_coordinates, set_coordinates)
-    color = property(get_color, set_color)
-    speed = property(get_speed, set_speed)
-    size = property(get_size, set_size)
+    # redundant getters and setters
+
+    # @property
+    # def x(self):
+    #     """
+    #     Returns the x coordinate of the shooter.
+    #     """
+    #     return self.__x
+
+    # @x.setter
+    # def x(self, x):
+    #     """
+    #     Sets the x coordinate of the shooter.
+    #     """
+    #     self.__x = x
+
+    # @property
+    # def y(self):
+    #     """
+    #     This method returns the y coordinate of the shooter.
+
+    #     """
+    #     return self.__y
+
+    # @y.setter
+    # def y(self, y):
+    #     """
+    #     This method sets the y coordinate of the shooter.
+
+    #     """
+    #     self.__y = y
+
+    ## oldskool getters and setters
+
+    # def get_x(self):
+    #     """
+    #     This method returns the x coordinate of the shooter.
+
+    #     """
+    #     return self.__x
+    
+    # def set_x(self, x):
+    #     """
+    #     This method sets the x coordinate of the shooter.
+
+    #     """
+    #     self._x = x
+
+    # def get_y(self):
+    #     """
+    #     This method returns the y coordinate of the shooter.
+
+    #     """
+    #     return self.__y
+
+    # def set_y(self, y):
+    #     """
+    #     This method sets the y coordinate of the shooter.
+
+    #     """
+    #     self.__y = y
+
+    # def get_coordinates(self):
+    #     """
+    #     This method returns the coordinates of the shooter.
+
+    #     """
+    #     return self.__coordinates
+
+    # def set_coordinates(self, coordinates):
+    #     """
+    #     This method sets the coordinates of the shooter.
+
+    #     """
+    #     self.__coordinates = coordinates
+
+    # def get_color(self):
+    #     """
+    #     This method returns the color of the shooter.
+
+    #     """
+    #     return self.__color
+
+    # def set_color(self, color):
+    #     """
+    #     This method sets the color of the shooter.
+
+    #     """
+    #     self.__color = color
+
+    # def get_speed(self):
+    #     """
+    #     This method returns the speed of the shooter.
+
+    #     """
+    #     return self.__speed
+
+    # def set_speed(self, speed):
+    #     """
+    #     This method sets the speed of the shooter.
+
+    #     """
+    #     self.__speed = speed
+
+    # def get_size(self):
+    #     """
+    #     This method returns the size of the shooter.
+
+    #     """
+    #     return self.__width, self.__height
+
+    # def set_size(self, width, height):
+    #     """
+    #     This method sets the size of the shooter.
+
+    #     """
+    #     self.__width = width
+    #     self.__height = height
+
+    # x = property(get_x, set_x)
+    # y = property(get_y, set_y)
+    # coordinates = property(get_coordinates, set_coordinates)
+    # color = property(get_color, set_color)
+    # speed = property(get_speed, set_speed)
+    # size = property(get_size, set_size)
