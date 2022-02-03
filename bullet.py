@@ -1,7 +1,7 @@
 # make a line for the bullet
 # move right check if it is off the screen
 # how to make bullet invisible on the screen
-# check the bullet is moving before setting
+# check the bullet is moving before setting / gettings
 # decorators / remove uncessary getters and setters
 import pygame as pg
 
@@ -115,101 +115,138 @@ class Bullet:
         self.__moving = False
         return True
 
-# Getters, Setters and Property constructs made below
+    # Getters, Setters and Property constructs made below
 
-    def get_x(self):
+    @property
+    def coordinates(self):
         '''
-        Returns the x coordinate of the Bullet.
-
-        '''
-        return self.__x
-
-    def set_x(self, x):
-        '''
-        Sets the x coordinate of the Bullet.
+        Returns the coordinates of the Enemy.
 
         '''
-        self.__x = x
-
-    def get_y(self):
-        '''
-        Returns the y coordinate of the Bullet.
-
-        '''
-        return self.__y
-
-    def set_y(self, y):
-        '''
-        Sets the y coordinate of the Bullet.
-
-        '''
-        self.__y = y
-
-    def get_coordinates(self):
-        """
-        This method gets the coordinates of the bullet.
-
-        """
         return self.__coordinates
 
-    def set_coordinates(self, coordinates):
-        """
-        This method sets the coordinates of the bullet.
+    @coordinates.setter
+    def coordinates(self, x=None, y=None):
+        '''
+        Sets the coordinates of the Bullet.
 
-        This method has been designed to be called when the bullet is moving. Other than self, this method passes in the following parameters:
-        coordinates (sequence): a list or tuple determining the coordinates to which to set the bullet. You may assume the coordinates are in the correct format.
-        """
-        if self.check_moving():
-            self.__coordinates = coordinates
+        '''
+        if x is not None:
+            self.__x = x
+        if y is not None:
+            self.__y = y
 
-    def get_size(self):
-        """
-        This method gets the size of the bullet.
+        self.__coordinates = [self.__x, self.__y]
 
-        """
+    @property
+    def size(self):
+        '''
+        Returns the size of the Bullet.
+
+        '''
         return self.__size
 
-    def set_size(self, size):
+    @size.setter
+    def size(self, size):
         """
-        This method sets the size of the bullet.
+        This method sets the size of the Bullet.
 
-        This method has been designed to be called when the bullet is moving. Other than self, this method passes in the following parameters:
-        size (int): an integer determining the size to which to set the bullet.
         """
-        if self.check_moving():
-            self.__size = size if isinstance(size, list) else [size, size]
+        self.__size = size if isinstance(size, list) else [size, size] 
+
+    # def get_x(self):
+    #     '''
+    #     Returns the x coordinate of the Bullet.
+
+    #     '''
+    #     return self.__x
+
+    # def set_x(self, x):
+    #     '''
+    #     Sets the x coordinate of the Bullet.
+
+    #     '''
+    #     self.__x = x
+
+    # def get_y(self):
+    #     '''
+    #     Returns the y coordinate of the Bullet.
+
+    #     '''
+    #     return self.__y
+
+    # def set_y(self, y):
+    #     '''
+    #     Sets the y coordinate of the Bullet.
+
+    #     '''
+    #     self.__y = y
+
+    # def get_coordinates(self):
+    #     """
+    #     This method gets the coordinates of the bullet.
+
+    #     """
+    #     return self.__coordinates
+
+    # def set_coordinates(self, coordinates):
+    #     """
+    #     This method sets the coordinates of the bullet.
+
+    #     This method has been designed to be called when the bullet is moving. Other than self, this method passes in the following parameters:
+    #     coordinates (sequence): a list or tuple determining the coordinates to which to set the bullet. You may assume the coordinates are in the correct format.
+    #     """
+    #     if self.check_moving():
+    #         self.__coordinates = coordinates
+
+    # def get_size(self):
+    #     """
+    #     This method gets the size of the bullet.
+
+    #     """
+    #     return self.__size
+
+    # def set_size(self, size):
+    #     """
+    #     This method sets the size of the bullet.
+
+    #     This method has been designed to be called when the bullet is moving. Other than self, this method passes in the following parameters:
+    #     size (int): an integer determining the size to which to set the bullet.
+    #     """
+    #     if self.check_moving():
+    #         self.__size = size if isinstance(size, list) else [size, size]
     
-    def get_color(self):
-        """
-        This method gets the color of the bullet.
+    # def get_color(self):
+    #     """
+    #     This method gets the color of the bullet.
 
-        """
-        return self.__color
+    #     """
+    #     return self.__color
 
-    def set_color(self, color):
-        """
-        This method sets the color of the bullet.
-        color (sequence): a sequence determining the color to which to set the bullet. You may assume the color is in the correct format.
-        """
-        if self.check_moving():
-            self.__color = color
+    # def set_color(self, color):
+    #     """
+    #     This method sets the color of the bullet.
+    #     color (sequence): a sequence determining the color to which to set the bullet. You may assume the color is in the correct format.
+    #     """
+    #     if self.check_moving():
+    #         self.__color = color
 
-    def get_speed(self):
-        """
-        This method gets the speed of the bullet.
+    # def get_speed(self):
+    #     """
+    #     This method gets the speed of the bullet.
 
-        """
-        return self.__speed
+    #     """
+    #     return self.__speed
 
-    def set_speed(self, speed):
-        """
-        This method sets the speed of the bullet.
+    # def set_speed(self, speed):
+    #     """
+    #     This method sets the speed of the bullet.
         
-        """
-        if self.check_moving():
-            self.__speed = speed
+    #     """
+    #     if self.check_moving():
+    #         self.__speed = speed
 
-    coordinates = property(get_coordinates, set_coordinates)
-    size = property(get_size, set_size)
-    color = property(get_color, set_color)
-    speed = property(get_speed, set_speed)
+    # coordinates = property(get_coordinates, set_coordinates)
+    # size = property(get_size, set_size)
+    # color = property(get_color, set_color)
+    # speed = property(get_speed, set_speed)

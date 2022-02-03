@@ -1,4 +1,3 @@
-# decorators / remove uncessary getters and setters
 import pygame as pg
 class Enemy:
     '''
@@ -81,10 +80,10 @@ class Enemy:
         if self.__y < top_bound:
             self.__speed_y = -self.__speed_y
             self.__y = top_bound
-        # if the x coordinate is greater than the value of the bottom bound
+        # if the y coordinate is greater than the value of the bottom bound
         # taking into account its height
         # the speed is reversed by minusing itself
-        # and the x coordinate is assigned to the value of the the bottom bound
+        # and the y coordinate is assigned to the value of the bottom bound
         if self.__y > bottom_bound - self.__size[1]:
             self.__speed_y = -self.__speed_y
             self.__y = bottom_bound - self.__size[1]
@@ -92,93 +91,136 @@ class Enemy:
 
 # Getters, Setters and Property constructs made below
 
-    def get_x(self):
+    @property
+    def coordinates(self):
         '''
-        Returns the x coordinate of the Enemy.
+        Returns the coordinates of the Enemy.
 
         '''
-        return self.__x
+        return self.__coordinates
 
-    def set_x(self, x):
+    @coordinates.setter
+    def coordinates(self, x=None, y=None):
         '''
-        Sets the x coordinate of the Enemy.
-
-        '''
-        self.__x = x
-
-    def get_y(self):
-        '''
-        Returns the y coordinate of the Enemy.
+        Sets the coordinates of the Enemy.
 
         '''
-        return self.__y
+        if x is not None:
+            self.__x = x
+        if y is not None:
+            self.__y = y
 
-    def set_y(self, y):
-        '''
-        Sets the y coordinate of the Enemy.
+        self.__coordinates = [x, y]
 
-        '''
-        self.__y = y
-
-    def get_size(self):
+    @property
+    def size(self):
         '''
         Returns the size of the Enemy.
 
         '''
         return self.__size
 
-    def set_size(self, size):
-        '''
-        Sets the size of the Enemy.
+    @size.setter
+    def size(self, width=None, height=None):
+        """
+        This method sets the size of the enemy.
 
-        '''
-        self.__size = size if isinstance(size, list) else [size, size]
+        """
+        if width is not None:
+            width = self.__width
+        if height is not None:
+            height = self.__height
+            
+        self.__size = [self.__width, self.__height]
 
-    def get_color(self):
-        '''
-        Returns the color of the Enemy.
 
-        '''
-        return self.__color
+    # def get_x(self):
+    #     '''
+    #     Returns the x coordinate of the Enemy.
 
-    def set_color(self, color):
-        '''
-        Sets the color of the Enemy.
+    #     '''
+    #     return self.__x
 
-        '''
-        self.__color = color
+    # def set_x(self, x):
+    #     '''
+    #     Sets the x coordinate of the Enemy.
 
-    def get_speed_x(self):
-        '''
-        Returns the speed of the Enemy in the x direction.
+    #     '''
+    #     self.__x = x
 
-        '''
-        return self.__speed_x
+    # def get_y(self):
+    #     '''
+    #     Returns the y coordinate of the Enemy.
 
-    def set_speed_x(self, speed_x):
-        '''
-        Sets the speed of the Enemy in the x direction.
+    #     '''
+    #     return self.__y
 
-        '''
-        self.__speed_x = speed_x
+    # def set_y(self, y):
+    #     '''
+    #     Sets the y coordinate of the Enemy.
 
-    def get_speed_y(self):
-        '''
-        Returns the speed of the Enemy in the y direction.
+    #     '''
+    #     self.__y = y
 
-        '''
-        return self.__speed_y
+    # def get_size(self):
+    #     '''
+    #     Returns the size of the Enemy.
 
-    def set_speed_y(self, speed_y):
-        '''
-        Sets the speed of the Enemy in the y direction.
+    #     '''
+    #     return self.__size
 
-        '''
-        self.__speed_y = speed_y
+    # def set_size(self, size):
+    #     '''
+    #     Sets the size of the Enemy.
 
-    x = property(get_x, set_x)
-    y = property(get_y, set_y)
-    size = property(get_size, set_size)
-    color = property(get_color, set_color)
-    speed_x = property(get_speed_x, set_speed_x)
-    speed_y = property(get_speed_y, set_speed_y)   
+    #     '''
+    #     self.__size = size if isinstance(size, list) else [size, size]
+
+    # def get_color(self):
+    #     '''
+    #     Returns the color of the Enemy.
+
+    #     '''
+    #     return self.__color
+
+    # def set_color(self, color):
+    #     '''
+    #     Sets the color of the Enemy.
+
+    #     '''
+    #     self.__color = color
+
+    # def get_speed_x(self):
+    #     '''
+    #     Returns the speed of the Enemy in the x direction.
+
+    #     '''
+    #     return self.__speed_x
+
+    # def set_speed_x(self, speed_x):
+    #     '''
+    #     Sets the speed of the Enemy in the x direction.
+
+    #     '''
+    #     self.__speed_x = speed_x
+
+    # def get_speed_y(self):
+    #     '''
+    #     Returns the speed of the Enemy in the y direction.
+
+    #     '''
+    #     return self.__speed_y
+
+    # def set_speed_y(self, speed_y):
+    #     '''
+    #     Sets the speed of the Enemy in the y direction.
+
+    #     '''
+    #     self.__speed_y = speed_y
+
+    # x = property(get_x, set_x)
+    # y = property(get_y, set_y)
+    # size = property(get_size, set_size)
+    # color = property(get_color, set_color)
+    # speed_x = property(get_speed_x, set_speed_x)
+    # speed_y = property(get_speed_y, set_speed_y)   
