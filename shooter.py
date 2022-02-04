@@ -1,16 +1,34 @@
-# doctrings
-# comment on decorators and code
-
 import pygame as pg
 class Shooter:
     """
-    A class to represent a shooter
+    Class representing the shooter.
 
+    Attributes
+    ----------
+        x : int
+            the x coordinate of the shooter
+        y : int
+            the y coordinate of the shooter
+        color : tuple
+            the color of the shooter
+        speed : int
+            the speed of the shooter
     """
 
     def __init__(self, x, y, color, speed):
         '''
-        Constructor for the Shooter class.
+        Initializes the Shooter.
+
+        Parameters
+        ----------
+            x : int
+                the x coordinate of the shooter
+            y : int
+                the y coordinate of the shooter
+            color : tuple or list
+                the color of the shooter
+            speed : int
+                the speed of the shooter
         '''
         # Instance variable - multiple shooters can instantiated with different coordinates
         # allows flexibility if we want to introduce more shooters (multiplayer game)
@@ -27,8 +45,7 @@ class Shooter:
 
     def __str__(self):
         '''
-        Returns a string representation of the Shooter including its color and coordinates.
-
+        A string representation of the Shooter including its color and location.
         '''
         return f'Shooter: {self.__color}. Location: ({self.__x},{self.__y})'
 
@@ -36,6 +53,10 @@ class Shooter:
         '''
         Draws the Shooter on the screen.
 
+        Parameters
+        ----------
+            display : pygame.display
+                the display on which the shooter is drawn
         '''
         # the rectangular coordinates and size are stored in a variable
         # (https://www.pygame.org/docs/ref/rect.html)
@@ -45,17 +66,12 @@ class Shooter:
 
     def move_up(self, moveup_trigger):
         """
-        This method moves the shooter up.
-        The shooter cannot move off the screen.
+        Moves the Shooter up.
 
-        a sequence of boolean values representing the state of every key on the keyboard
         Parameters
         ----------
-            moveup_trigger : sequence of boolean values representing the state of the keys on the keyboard
-
-        Returns
-        -------
-        
+            moveup_trigger : pygame.key.get_pressed()
+                the state of the keys on the keyboard        
         """
         # if the up arrow is pressed the y coordinate instance variable is reversed
         # by reassigning it to the value of itself minus the speed
@@ -70,9 +86,15 @@ class Shooter:
 
     def move_down(self, display_height, movedown_trigger):
         """
-        This method moves the shooter down.
-        The shooter cannot move off the screen.
+        Moves the Shooter down.
 
+        Parameters
+        ----------
+
+            display_height : int
+                the height of the display
+            movedown_trigger : pygame.key.get_pressed()
+                the state of the keys on the keyboard
         """
         # if the down arrow is pressed the y coordinate instance variable is increased
         # by reassigning it to the value of itself plus the speed
@@ -93,8 +115,12 @@ class Shooter:
     @property
     def coordinates(self):
         """
-        This method returns the coordinates of the shooter.
+        Gets the coordinates of the shooter.
 
+        Returns
+        -------
+            coordinates : list
+                the coordinates of the shooter
         """
         return self.__coordinates
 
@@ -103,27 +129,31 @@ class Shooter:
     @coordinates.setter
     def coordinates(self, x=None, y=None):
         """
-        This method sets the coordinates of the shooter.
+        Sets the coordinates of the shooter.
 
-        The default values are the instance variables of the shooter.
-
+        Parameters
+        ----------
+            x : int
+                the x coordinate of the shooter
+            y : int
+                the y coordinate of the shooter
         """
-        if x is None:
+        if x is not None:
             x = self.__x
-        else:
-            self.__x = x
-        if y is None:
+        if y is not None:
             y = self.__y
-        else:
-            self.__y = y
 
         self.__coordinates = [self.__x, self.__y]
 
     @property
     def size(self):
         """
-        This method returns the size of the shooter.
+        Gets the size of the shooter.
 
+        Returns
+        -------
+            size : list
+                the size of the shooter
         """
         return self.__size
 
@@ -132,139 +162,16 @@ class Shooter:
         """
         This method sets the size of the shooter.
 
+        Parameters
+        ----------
+            width : int
+                the width of the shooter
+            height : int
+                the height of the shooter
         """
-        if width is None:
+        if width is not None:
             width = self.__width
-        else:
-            self.__width = width
-        if height is None:
+        if height is not None:
             height = self.__height
-        else:
-            self.__height = height
+            
         self.__size = [self.__width, self.__height]
-
-    # redundant getters and setters
-
-    # @property
-    # def x(self):
-    #     """
-    #     Returns the x coordinate of the shooter.
-    #     """
-    #     return self.__x
-
-    # @x.setter
-    # def x(self, x):
-    #     """
-    #     Sets the x coordinate of the shooter.
-    #     """
-    #     self.__x = x
-
-    # @property
-    # def y(self):
-    #     """
-    #     This method returns the y coordinate of the shooter.
-
-    #     """
-    #     return self.__y
-
-    # @y.setter
-    # def y(self, y):
-    #     """
-    #     This method sets the y coordinate of the shooter.
-
-    #     """
-    #     self.__y = y
-
-    ## oldskool getters and setters
-
-    # def get_x(self):
-    #     """
-    #     This method returns the x coordinate of the shooter.
-
-    #     """
-    #     return self.__x
-    
-    # def set_x(self, x):
-    #     """
-    #     This method sets the x coordinate of the shooter.
-
-    #     """
-    #     self._x = x
-
-    # def get_y(self):
-    #     """
-    #     This method returns the y coordinate of the shooter.
-
-    #     """
-    #     return self.__y
-
-    # def set_y(self, y):
-    #     """
-    #     This method sets the y coordinate of the shooter.
-
-    #     """
-    #     self.__y = y
-
-    # def get_coordinates(self):
-    #     """
-    #     This method returns the coordinates of the shooter.
-
-    #     """
-    #     return self.__coordinates
-
-    # def set_coordinates(self, coordinates):
-    #     """
-    #     This method sets the coordinates of the shooter.
-
-    #     """
-    #     self.__coordinates = coordinates
-
-    # def get_color(self):
-    #     """
-    #     This method returns the color of the shooter.
-
-    #     """
-    #     return self.__color
-
-    # def set_color(self, color):
-    #     """
-    #     This method sets the color of the shooter.
-
-    #     """
-    #     self.__color = color
-
-    # def get_speed(self):
-    #     """
-    #     This method returns the speed of the shooter.
-
-    #     """
-    #     return self.__speed
-
-    # def set_speed(self, speed):
-    #     """
-    #     This method sets the speed of the shooter.
-
-    #     """
-    #     self.__speed = speed
-
-    # def get_size(self):
-    #     """
-    #     This method returns the size of the shooter.
-
-    #     """
-    #     return self.__width, self.__height
-
-    # def set_size(self, width, height):
-    #     """
-    #     This method sets the size of the shooter.
-
-    #     """
-    #     self.__width = width
-    #     self.__height = height
-
-    # x = property(get_x, set_x)
-    # y = property(get_y, set_y)
-    # coordinates = property(get_coordinates, set_coordinates)
-    # color = property(get_color, set_color)
-    # speed = property(get_speed, set_speed)
-    # size = property(get_size, set_size)

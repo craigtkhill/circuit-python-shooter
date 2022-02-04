@@ -1,15 +1,42 @@
 import pygame as pg
 class Enemy:
     '''
-    Class representing the Enemy.
+    Class representing the enemy.
 
+    Attributes
+    ----------
+        x : int
+            the x coordinate of the enemy
+        y : int
+            the y coordinate of the enemy
+        color : tuple or list
+            the color of the enemy
+        size : tuple, list or int
+            the size of the enemy
+        speed_x : int
+            the speed of the enemy in the x direction
+        speed_y : int
+            the speed of the enemy in the y direction
     '''
 
     def __init__(self, x, y, color, size, speed_x, speed_y):
         '''
-        Constructor for the Enemy class.
+        Initializes the Enemy.
 
-        size can be passed in as a list or a single value
+        Parameters
+        ----------
+            x : int
+                the x coordinate of the enemy
+            y : int
+                the y coordinate of the enemy
+            color : tuple or list
+                the color of the enemy
+            size : tuple, list or int
+                the size of the enemy
+            speed_x : int
+                the speed of the enemy in the x direction
+            speed_y : int
+                the speed of the enemy in the y direction
         '''
         # Instance Variable - Multiple enemys can be instantiated with different coordinates
         # allows flexiblity if we want intoduce more enemies
@@ -30,8 +57,7 @@ class Enemy:
 
     def __str__(self):
         '''
-        Returns a string representation of the Enemy.
-
+        Returns a string representation of the enemy including it color and location
         '''
         return f'Enemy: {self.__color}. Location: ({self.__x},{self.__y})'
 
@@ -39,6 +65,9 @@ class Enemy:
         '''
         Draws the Enemy on the screen.
 
+        Parameters
+        ----------
+            display : pygame.Surface
         '''
         # the rectangular coordinates and size are stored in a variable
         # (https://www.pygame.org/docs/ref/rect.html)
@@ -48,14 +77,18 @@ class Enemy:
 
     def move(self, left_bound, right_bound, top_bound, bottom_bound):
         """
-        This method moves the enemy diagonally.
+        Moves the enemy diagonally while keeping it within the bounds of the screen.
 
-        Speed defined in an instance variable
-        The enemy cannot move off the screen.
-        The enemy should change direction when it reaches the edge of the screen.
-        Take into account the size of the enemy.
-
-        how are the bounds passed in?
+        Parameters
+        ----------
+            left_bound : int
+                the left boundary of the screen
+            right_bound : int
+                the right boundary of the screen
+            top_bound : int
+                the top boundary of the screen
+            bottom_bound : int
+                the bottom boundary of the screen
 
         """
         # The x and y coordinates are increased by the value of the speed instance variable
@@ -89,138 +122,64 @@ class Enemy:
             self.__y = bottom_bound - self.__size[1]
         self.__coordinates = [self.__x, self.__y]
 
-# Getters, Setters and Property constructs made below
-
     @property
     def coordinates(self):
         '''
-        Returns the coordinates of the Enemy.
+        Gets the coordinates of the enemy.
 
+        Returns
+        -------
+            coordinates : list
+                the coordinates of the enemy
         '''
         return self.__coordinates
 
     @coordinates.setter
     def coordinates(self, x=None, y=None):
         '''
-        Sets the coordinates of the Enemy.
+        Sets the coordinates of the enemy.
 
+        Parameters
+        ----------
+            x : int
+                the x coordinate of the enemy
+            y : int
+                the y coordinate of the enemy
         '''
         if x is not None:
             self.__x = x
         if y is not None:
             self.__y = y
 
-        self.__coordinates = [x, y]
+        self.__coordinates = [self.__x, self.__y]
 
     @property
     def size(self):
         '''
-        Returns the size of the Enemy.
+        Gets the size of the enemy.
 
+        Returns
+        -------
+            size : list
+                the size of the enemy
         '''
         return self.__size
 
     @size.setter
     def size(self, width=None, height=None):
         """
-        This method sets the size of the enemy.
+        Sets the size of the enemy.
 
+        Parameters
+        ----------
+            width : int
+                the width of the enemy
+            height : int
+                the height of the enemy
         """
         if width is not None:
             width = self.__width
         if height is not None:
             height = self.__height
             
-        self.__size = [self.__width, self.__height]
-
-
-    # def get_x(self):
-    #     '''
-    #     Returns the x coordinate of the Enemy.
-
-    #     '''
-    #     return self.__x
-
-    # def set_x(self, x):
-    #     '''
-    #     Sets the x coordinate of the Enemy.
-
-    #     '''
-    #     self.__x = x
-
-    # def get_y(self):
-    #     '''
-    #     Returns the y coordinate of the Enemy.
-
-    #     '''
-    #     return self.__y
-
-    # def set_y(self, y):
-    #     '''
-    #     Sets the y coordinate of the Enemy.
-
-    #     '''
-    #     self.__y = y
-
-    # def get_size(self):
-    #     '''
-    #     Returns the size of the Enemy.
-
-    #     '''
-    #     return self.__size
-
-    # def set_size(self, size):
-    #     '''
-    #     Sets the size of the Enemy.
-
-    #     '''
-    #     self.__size = size if isinstance(size, list) else [size, size]
-
-    # def get_color(self):
-    #     '''
-    #     Returns the color of the Enemy.
-
-    #     '''
-    #     return self.__color
-
-    # def set_color(self, color):
-    #     '''
-    #     Sets the color of the Enemy.
-
-    #     '''
-    #     self.__color = color
-
-    # def get_speed_x(self):
-    #     '''
-    #     Returns the speed of the Enemy in the x direction.
-
-    #     '''
-    #     return self.__speed_x
-
-    # def set_speed_x(self, speed_x):
-    #     '''
-    #     Sets the speed of the Enemy in the x direction.
-
-    #     '''
-    #     self.__speed_x = speed_x
-
-    # def get_speed_y(self):
-    #     '''
-    #     Returns the speed of the Enemy in the y direction.
-
-    #     '''
-    #     return self.__speed_y
-
-    # def set_speed_y(self, speed_y):
-    #     '''
-    #     Sets the speed of the Enemy in the y direction.
-
-    #     '''
-    #     self.__speed_y = speed_y
-
-    # x = property(get_x, set_x)
-    # y = property(get_y, set_y)
-    # size = property(get_size, set_size)
-    # color = property(get_color, set_color)
-    # speed_x = property(get_speed_x, set_speed_x)
-    # speed_y = property(get_speed_y, set_speed_y)   
+        self.__size = [self.__width, self.__height]  

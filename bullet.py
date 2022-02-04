@@ -1,19 +1,37 @@
-# make a line for the bullet
-# move right check if it is off the screen
-# how to make bullet invisible on the screen
-# check the bullet is moving before setting / gettings
-# decorators / remove uncessary getters and setters
 import pygame as pg
 
 class Bullet:
     '''
-    Class representing the Bullet.
+    Class representing the bullet.
 
+    Attributes
+    ----------
+        x : int
+            the x coordinate of the bullet
+        y : int
+            the y coordinate of the bullet
+        size : tuple/list of int or int
+            the size of the bullet
+        color : tuple, list or int 
+            the color of the bullet
+        speed : int
+            the speed of the bullet
+        moving : bool
+            True if the bullet is moving, False otherwise
     '''
 
     def __init__(self, size, color, speed):
         '''
-        Constructor for the Bullet class.
+        Initializes the Bullet.
+
+        Parameters
+        ----------
+            size : list
+                the size of the bullet
+            color : tuple, list or int
+                the color of the bullet
+            speed : int
+                the speed of the bullet
 
         '''
         # Instance Variable - Currently there is only one bullet allowed on the
@@ -36,7 +54,7 @@ class Bullet:
 
     def __str__(self):
         '''
-        Returns a string representation of the Bullet.
+        Returns a string representation of the bullet including color and location.
 
         '''
         return f'Bullet: {self.__color}. Location: ({self.__x, self.__y})'
@@ -45,40 +63,47 @@ class Bullet:
         '''
         Draws the Bullet on the screen.
 
+        Parameters
+        ----------
+            display : pygame.display
+                the display window
         '''
+        # if the bullet has been fired
+        if self.check_moving():
         # the rectangular coordinates and size are stored in a variable
         # (https://www.pygame.org/docs/ref/rect.html)
-        bullet_rect = pg.Rect(self.__coordinates, self.__size)
-        # pygame draws the rectangle to the display
-        pg.draw.rect(display, self.__color, bullet_rect)
+            bullet_rect = pg.Rect(self.__coordinates, self.__size)
+            # pygame draws the rectangle to the display
+            pg.draw.rect(display, self.__color, bullet_rect)
 
     def move_right(self):
         """
-        This method moves the bullet right.
+        Moves the bullet right.
 
-        The bullet not be able to move off the screen. Therefore, this method should check if the bullet is able to move right.
-
-        The bullet should “emerge” from the shooter. Therefore, it should:
-        move horizontally, in the direction the enemy is located, if the shooter is located on the left/right hand side of the screen.
-        starting coordinates in the start method.
+        Precondition: The bullet is moving.
         """
-        self.__x += self.__speed
-        self.__coordinates = [self.__x, self.__y]
+        if self.check_moving():
+            self.__x += self.__speed
+            self.__coordinates = [self.__x, self.__y]
 
 
     def start(self, coordinates):
         """
         Starts the bullet moving and causes the bullet to appear on the screen.
 
-        coordinates (sequence): a list or tuple determining the coordinates from which to start the bullet. You may assume the coordinates are in the correct format.
-        set the Boolean variable that determines whether the Bullet is moving to True
+        Parameters
+        ----------
+            coordinates : list
+                the coordinates of the bullet
         """
+        # if there is no bullet on the screen
+        if self.check_moving() == False:
         # the starting coordinates of the bullet are assigned
-        self.__x = coordinates[0]
-        self.__y = coordinates[1]
-        self.__coordinates = [self.__x, self.__y]
-        # and the moving variable is set to true
-        self.__moving = True
+            self.__x = coordinates[0]
+            self.__y = coordinates[1]
+            #self.__coordinates = [self.__x, self.__y]
+            # and the moving variable is set to true
+            self.__moving = True
 
     def stop(self):
         """
@@ -89,7 +114,7 @@ class Bullet:
         # the moving variable is set to false
         self.__moving = False
         # and the coordinates are reset to 0, 0
-        self.coordinates = [0, 0]
+        self.__coordinates = [0, 0]
 
     def check_moving(self):
         """
@@ -100,12 +125,17 @@ class Bullet:
 
     def wall_collision(self, right_bound):
         """
-        This method checks for a wall collision.
+        Checks if the bullet collided with the wall.
 
-        If the bullet collides with the “wall” behind the enemy, it means that the bullet missed the enemy.
-        This method should check if the bullet has collided with the wall behind the enemy. Depending on where your enemy is located, you may need to pass in an additional parameter to determine the wall location.
-        • If the bullet has collided with the wall behind the enemy, the variable to control the bullet moving should be set to False. Additionally, the method should return True to determine that the bullet has collided with the wall.
-        • If the bullet has not collided with the wall behind the enemy, the variable controlling the bullet moving should be set to True. Additionally, the method should return False to determine that the bullet has not collided with the wall.
+        Parameters
+        ----------
+            right_bound : int
+                the right bound of the screen
+
+        Returns
+        -------
+            bool
+                True if the bullet collided with the wall, False otherwise        
         """
         # if the x coordinate of the bullet is less than or equal to the right bound
         # False is returned
@@ -115,21 +145,29 @@ class Bullet:
         self.__moving = False
         return True
 
-    # Getters, Setters and Property constructs made below
-
     @property
     def coordinates(self):
         '''
-        Returns the coordinates of the Enemy.
+        Gets the coordinates of the bullet.
 
+        Returns
+        -------
+            coordinates : list of int
+                the coordinates of the bullet
         '''
         return self.__coordinates
 
     @coordinates.setter
     def coordinates(self, x=None, y=None):
         '''
-        Sets the coordinates of the Bullet.
+        Sets the coordinates of the bullet.
 
+        Parameters
+        ----------
+            x : int
+                the x coordinate of the bullet
+            y : int
+                the y coordinate of the bullet
         '''
         if x is not None:
             self.__x = x
@@ -141,112 +179,23 @@ class Bullet:
     @property
     def size(self):
         '''
-        Returns the size of the Bullet.
+        Gets the size of the bullet.
 
+        Returns
+        -------
+            size : list of int
+                the size of the bullet
         '''
         return self.__size
 
     @size.setter
     def size(self, size):
         """
-        This method sets the size of the Bullet.
+        Sets the size of the bullet.
 
+        Parameters
+        ----------
+            size : tuple/list of int or int
+                the size of the bullet
         """
         self.__size = size if isinstance(size, list) else [size, size] 
-
-    # def get_x(self):
-    #     '''
-    #     Returns the x coordinate of the Bullet.
-
-    #     '''
-    #     return self.__x
-
-    # def set_x(self, x):
-    #     '''
-    #     Sets the x coordinate of the Bullet.
-
-    #     '''
-    #     self.__x = x
-
-    # def get_y(self):
-    #     '''
-    #     Returns the y coordinate of the Bullet.
-
-    #     '''
-    #     return self.__y
-
-    # def set_y(self, y):
-    #     '''
-    #     Sets the y coordinate of the Bullet.
-
-    #     '''
-    #     self.__y = y
-
-    # def get_coordinates(self):
-    #     """
-    #     This method gets the coordinates of the bullet.
-
-    #     """
-    #     return self.__coordinates
-
-    # def set_coordinates(self, coordinates):
-    #     """
-    #     This method sets the coordinates of the bullet.
-
-    #     This method has been designed to be called when the bullet is moving. Other than self, this method passes in the following parameters:
-    #     coordinates (sequence): a list or tuple determining the coordinates to which to set the bullet. You may assume the coordinates are in the correct format.
-    #     """
-    #     if self.check_moving():
-    #         self.__coordinates = coordinates
-
-    # def get_size(self):
-    #     """
-    #     This method gets the size of the bullet.
-
-    #     """
-    #     return self.__size
-
-    # def set_size(self, size):
-    #     """
-    #     This method sets the size of the bullet.
-
-    #     This method has been designed to be called when the bullet is moving. Other than self, this method passes in the following parameters:
-    #     size (int): an integer determining the size to which to set the bullet.
-    #     """
-    #     if self.check_moving():
-    #         self.__size = size if isinstance(size, list) else [size, size]
-    
-    # def get_color(self):
-    #     """
-    #     This method gets the color of the bullet.
-
-    #     """
-    #     return self.__color
-
-    # def set_color(self, color):
-    #     """
-    #     This method sets the color of the bullet.
-    #     color (sequence): a sequence determining the color to which to set the bullet. You may assume the color is in the correct format.
-    #     """
-    #     if self.check_moving():
-    #         self.__color = color
-
-    # def get_speed(self):
-    #     """
-    #     This method gets the speed of the bullet.
-
-    #     """
-    #     return self.__speed
-
-    # def set_speed(self, speed):
-    #     """
-    #     This method sets the speed of the bullet.
-        
-    #     """
-    #     if self.check_moving():
-    #         self.__speed = speed
-
-    # coordinates = property(get_coordinates, set_coordinates)
-    # size = property(get_size, set_size)
-    # color = property(get_color, set_color)
-    # speed = property(get_speed, set_speed)
