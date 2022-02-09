@@ -10,9 +10,9 @@ class Bullet:
             the x coordinate of the bullet
         y : int
             the y coordinate of the bullet
-        size : tuple/list of int or int
-            the size of the bullet
-        color : tuple, list or int 
+        size : tuple, list or int
+            the height and width of the bullet
+        color : tuple or list of RGB values
             the color of the bullet
         speed : int
             the speed of the bullet
@@ -24,24 +24,14 @@ class Bullet:
         '''
         Initializes the Bullet.
 
-        Parameters
-        ----------
-            size : list
-                the size of the bullet
-            color : tuple, list or int
-                the color of the bullet
-            speed : int
-                the speed of the bullet
-
+        Currently there is only one bullet allowed on the screen at a time however 
+        Using instance variables allows flexibility to introduce multiple bullets later if we wish. We may also want to extend the code to different types of bullets
+        with different sizes, colors and speeds.
         '''
-        # Instance Variable - Currently there is only one bullet allowed on the
-        # screen at a time however instance variables allow flexibility
-        # to introduce multiple bullets later if we wish.
         self.__x = 0
         self.__y = 0
         self.__coordinates = [self.__x, self.__y]
-        # Instance Variables - The colors, sizes, speeds and is_moving for each bullet can be set individually
-        # if the size parameter is a list the values in the list are assigned
+        # if the size parameter is a list or tuple the values in the are assigned
         # to the size of the bullet, otherwise and new list with two values 
         # is created using a simplied if else statement
         # (https://docs.python.org/3/library/functions.html#isinstance)
@@ -67,6 +57,8 @@ class Bullet:
         ----------
             display : pygame.display
                 the display window
+
+        Precondition: The bullet is moving.
         '''
         # if the bullet has been fired
         if self.check_moving():
@@ -82,38 +74,41 @@ class Bullet:
 
         Precondition: The bullet is moving.
         """
+        # if the bullet is moving
         if self.check_moving():
+        # the x coordinate of the bullet is incremented by the speed
             self.__x += self.__speed
+            # and the coordinates of the bullet are updated
             self.__coordinates = [self.__x, self.__y]
 
 
     def start(self, coordinates):
         """
-        Starts the bullet moving and causes the bullet to appear on the screen.
+        Starts the bullet moving if there are no other bullets on the screen.
+        Sets the bullets moving attribute to True.
 
         Parameters
         ----------
             coordinates : list
                 the coordinates of the bullet
+
+        Precondition: The bullet is not moving.
         """
         # if there is no bullet on the screen
         if self.check_moving() == False:
         # the starting coordinates of the bullet are assigned
             self.__x = coordinates[0]
             self.__y = coordinates[1]
-            #self.__coordinates = [self.__x, self.__y]
             # and the moving variable is set to true
             self.__moving = True
 
     def stop(self):
         """
-        Stops the bullet from moving and causes the bullet to disappear from the display. 
-        Set the coordinates of the bullet so that it is not visible on the display window
-        Set the instance variable that determines whether the bullet is moving to False
+        Stops the bullet from moving and resets the bullet's coordinates.
         """
         # the moving variable is set to false
         self.__moving = False
-        # and the coordinates are reset to 0, 0
+        # the coordinates are reset to 0, 0
         self.__coordinates = [0, 0]
 
     def check_moving(self):
@@ -126,6 +121,7 @@ class Bullet:
     def wall_collision(self, right_bound):
         """
         Checks if the bullet collided with the wall.
+        Sets the bullets moving attribute to false if it did.
 
         Parameters
         ----------
@@ -135,7 +131,7 @@ class Bullet:
         Returns
         -------
             bool
-                True if the bullet collided with the wall, False otherwise        
+                True if the bullet collided with the wall, else False        
         """
         # if the x coordinate of the bullet is less than or equal to the right bound
         # False is returned
@@ -145,6 +141,8 @@ class Bullet:
         self.__moving = False
         return True
 
+# Getters for coordinates and size of the bullet below.
+
     @property
     def coordinates(self):
         '''
@@ -152,50 +150,32 @@ class Bullet:
 
         Returns
         -------
-            coordinates : list of int
-                the coordinates of the bullet
+            coordinates : list
+                the x and y coordinates of the bullet
         '''
         return self.__coordinates
 
-    @coordinates.setter
-    def coordinates(self, x=None, y=None):
-        '''
-        Sets the coordinates of the bullet.
-
-        Parameters
-        ----------
-            x : int
-                the x coordinate of the bullet
-            y : int
-                the y coordinate of the bullet
-        '''
-        if x is not None:
-            self.__x = x
-        if y is not None:
-            self.__y = y
-
-        self.__coordinates = [self.__x, self.__y]
-
     @property
-    def size(self):
+    def height(self):
         '''
         Gets the size of the bullet.
 
         Returns
         -------
-            size : list of int
-                the size of the bullet
+            size : int
+                the height of the bullet
         '''
-        return self.__size
+        return self.__size[1]
 
-    @size.setter
-    def size(self, size):
-        """
-        Sets the size of the bullet.
+    @property
+    def width(self):
+        '''
+        Gets the width of the bullet.
 
-        Parameters
-        ----------
-            size : tuple/list of int or int
-                the size of the bullet
-        """
-        self.__size = size if isinstance(size, list) else [size, size] 
+        Returns
+        -------
+            size : int
+                the width of the bullet
+        '''
+        return self.__size[0]
+

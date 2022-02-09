@@ -9,10 +9,10 @@ class Enemy:
             the x coordinate of the enemy
         y : int
             the y coordinate of the enemy
-        color : tuple or list
+        color : tuple or list of RGB values
             the color of the enemy
         size : tuple, list or int
-            the size of the enemy
+            the height and width of the enemy
         speed_x : int
             the speed of the enemy in the x direction
         speed_y : int
@@ -23,37 +23,27 @@ class Enemy:
         '''
         Initializes the Enemy.
 
-        Parameters
-        ----------
-            x : int
-                the x coordinate of the enemy
-            y : int
-                the y coordinate of the enemy
-            color : tuple or list
-                the color of the enemy
-            size : tuple, list or int
-                the size of the enemy
-            speed_x : int
-                the speed of the enemy in the x direction
-            speed_y : int
-                the speed of the enemy in the y direction
+        Instance variables are used here to allow multiple enemies to be instantiated 
+        with different coordinates, sizes, colors and speeds set individually.
+        This allows flexibility if we want to introduce more enemies to make the game
+        more challenging.
         '''
-        # Instance Variable - Multiple enemys can be instantiated with different coordinates
-        # allows flexiblity if we want intoduce more enemies
+        # Coordinates
         self.__x = x
         self.__y = y
         self.__coordinates = [self.__x, self.__y]
-        # Instance Variables - The colors, sizes and speeds for each enemy can be set individually
+        # Color
         self.__color = color
-        # if the size parameter is a list the values in the list are assigned
+        # if the size parameter is a list or tuple the values are assigned
         # to the size of the enemy, otherwise and new list with two values 
         # is created using a simplied if else statement
         # (https://docs.python.org/3/library/functions.html#isinstance)
         # (https://stackoverflow.com/questions/2802726/putting-a-simple-if-then-else-statement-on-one-line)
-        self.__size = size if isinstance(size, list) else [size, size]
+        # Size
+        self.__size = size if isinstance(size, (list, tuple)) else [size, size]
+        # Speed in differnt directions
         self.__speed_x = speed_x
         self.__speed_y = speed_y
-        
 
     def __str__(self):
         '''
@@ -67,7 +57,8 @@ class Enemy:
 
         Parameters
         ----------
-            display : pygame.Surface
+            display : pygame.display
+                the display on which the enemy is drawn
         '''
         # the rectangular coordinates and size are stored in a variable
         # (https://www.pygame.org/docs/ref/rect.html)
@@ -120,7 +111,10 @@ class Enemy:
         if self.__y > bottom_bound - self.__size[1]:
             self.__speed_y = -self.__speed_y
             self.__y = bottom_bound - self.__size[1]
+        # the enemy's coordinates are updated
         self.__coordinates = [self.__x, self.__y]
+
+# Getters for coordinates and size of the enemy below.
 
     @property
     def coordinates(self):
@@ -130,56 +124,31 @@ class Enemy:
         Returns
         -------
             coordinates : list
-                the coordinates of the enemy
+                the x and y coordinates of the enemy
         '''
         return self.__coordinates
 
-    @coordinates.setter
-    def coordinates(self, x=None, y=None):
-        '''
-        Sets the coordinates of the enemy.
-
-        Parameters
-        ----------
-            x : int
-                the x coordinate of the enemy
-            y : int
-                the y coordinate of the enemy
-        '''
-        if x is not None:
-            self.__x = x
-        if y is not None:
-            self.__y = y
-
-        self.__coordinates = [self.__x, self.__y]
-
     @property
-    def size(self):
+    def heigth(self):
         '''
-        Gets the size of the enemy.
+        Gets the height of the enemy.
 
         Returns
         -------
-            size : list
-                the size of the enemy
-        '''
-        return self.__size
-
-    @size.setter
-    def size(self, width=None, height=None):
-        """
-        Sets the size of the enemy.
-
-        Parameters
-        ----------
-            width : int
-                the width of the enemy
-            height : int
+            size : int
                 the height of the enemy
-        """
-        if width is not None:
-            width = self.__width
-        if height is not None:
-            height = self.__height
-            
-        self.__size = [self.__width, self.__height]  
+        '''
+        return self.__height
+
+
+    @property
+    def width(self):
+        '''
+        Gets the width of the enemy.
+
+        Returns
+        -------
+            size : int
+                the width of the enemy
+        '''
+        return self.__width

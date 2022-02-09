@@ -6,42 +6,41 @@ from bullet import Bullet
 pg.init()
 
 # The display width and height and stored in variables using multiple assignment
-# (https://stackoverflow.com/questions/5495332/more-elegant-way-of-declaring-multiple-variables-at-the-same-time)
+# https://stackoverflow.com/questions/5495332/more-elegant-way-of-declaring-multiple-variables-at-the-same-time
 DISPLAY_WIDTH, DISPLAY_HEIGHT = 900, 600
 # The display size is stored in a tuple
 DISPLAY_SIZE = (DISPLAY_WIDTH, DISPLAY_HEIGHT)
 # Pygame sets the display using the display size
 DISPLAY = pg.display.set_mode(DISPLAY_SIZE)
-# A caption is set for the game 
-# (https://www.pygame.org/docs/ref/display.html#pygame.display.set_caption)
-pg.display.set_caption("Shooter")
+# A caption is set for the game https://www.pygame.org/docs/ref/display.html#pygame.display.set_caption
+pg.display.set_caption("Python Circuit Shooter")
 
-# Colors are assigned in tuples
+# Colors are assigned to RGB values in tuples
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
-YELLOW = (255, 255, 0)
-RED = (255, 0, 0)
-GREY = (251, 248, 241)
+YELLOW = (240, 210, 10)
+RED = (250, 70, 90)
+GREY = (240, 240, 240)
 
 # The boundary rectangle separating the shooter from the enemy is created using the following variables
 BORDER_WIDTH = 10
 BORDER_HEIGHT = DISPLAY_HEIGHT
-# border x accounts for the width of the border
+# BORDER_X accounts for the width of the border
 BORDER_X = DISPLAY_WIDTH // 2 - BORDER_WIDTH // 2
 BORDER_Y = 0
 
-# the rectangular coordinates and size are stored in a variable
-# (https://www.pygame.org/docs/ref/rect.html)
+# the rectangular coordinates and size are stored in a Rect object https://www.pygame.org/docs/ref/rect.html
+# this represents a thin rectangle border separating the shooter and the enemy
 BORDER = pg.Rect(BORDER_X, BORDER_Y, BORDER_WIDTH, BORDER_HEIGHT)
 
-# Framerate is stored as a constant variable
+# Framerate is stored as a constant variable set to 60 frames per second
 FPS = 60
 
 # Shooter Variables
 shooter_x = 100
 shooter_y = 100
 shooter_speed = 5
-# a shooter is instanced
+# a shooter is instantiated
 shooter = Shooter(shooter_x, shooter_y, BLACK, shooter_speed)
 
 # Enemy Variables
@@ -50,55 +49,102 @@ enemy_y = 400
 enemy_size = [20, 30]
 enemy_speed_x = 10
 enemy_speed_y = 10
-# a enemy is instanced
+# An enemy is instantiated
 enemy = Enemy(enemy_x, enemy_y, YELLOW, enemy_size, enemy_speed_x, enemy_speed_y)
 
 # Bullet Variables
 bullet_size = [10, 5]
 bullet_speed = 20
+# A bullet is instantiated
 bullet = Bullet(bullet_size, RED, bullet_speed)
 
-# Available to us because of the Rect object
+# The left boundary for the enemy is the right of the rectangle border drawn in the center
+# This rectangle object has an attribute 'right' that allows us to access the
+# coordinate of the right side of the border
 LEFT_BOUNDARY = BORDER.right
+# The right boundary of the enemy is the width of the display
 RIGHT_BOUNDARY = DISPLAY_WIDTH
+# The top boundary for the enemy is zero
 TOP_BOUNDARY = 0
+# The bottom boundary for the enemy is the height of the display
 BOTTOM_BOUNDARY = DISPLAY_HEIGHT
 
-def draw_window():
+def draw_display():
     """
-    Function to draw elements the window.
+    Function to draw elements to the display.
+
+    This helps to separate the drawing of elements from the logic
+    of the game keeping the code cleaner and more readable.
     """
-    DISPLAY.fill(WHITE) # 90 minute video for beginners
-    # HERE I DRAW TO THE SCREEN
+    # The display is cleared and the backgound filled with white.
+    DISPLAY.fill(WHITE)
+    # A rectangle representing the boundary between the shooter and the enemy is drawn.
     pg.draw.rect(DISPLAY, GREY, BORDER)
+    # The shooter is drawn to the display.
     shooter.draw(DISPLAY)
+    # The enemy is drawn to the display.
     enemy.draw(DISPLAY)
+    # If the bullet is moving, it is drawn to the display.
     bullet.draw(DISPLAY)
+    # The display is updated.
     pg.display.update()
 
 def main():
     """
-    Function to run the game.
+    Function to run the game and handle the games logic.
     """
+    # a clock object is created to monitor the framerate
     clock = pg.time.Clock()
+    # the run game variable is initially set to true
     run_game = True
+    # While the game is running
     while run_game:
-        clock.tick(FPS)
+        # for every event in the event queue
         for event in pg.event.get():
+        # if the user quits the game the run game is set to false.
             if event.type == pg.QUIT:
                 run_game = False
 
-        keys_pressed = pg.key.get_pressed()
-        shooter.move_up(keys_pressed)
-        shooter.move_down(DISPLAY_HEIGHT, keys_pressed)
-        enemy.move(LEFT_BOUNDARY, RIGHT_BOUNDARY, TOP_BOUNDARY, BOTTOM_BOUNDARY)
-        if keys_pressed[pg.K_SPACE]:
-            bullet.start(shooter.coordinates)
-        bullet.move_right()
-        if bullet.wall_collision(RIGHT_BOUNDARY):
-            bullet.stop()
+        # Event driven programming is used to control the shooter.
+        # When the user presses buttons such as the arrow keys (to move)
+        # or the space bar (to shoot) the event is handled by the code which
+        # responds to the event and changes the shooter's state or bullets state
+        
+        # the key.get_pressed() method provides a true value while the key is pressed
+        # removing the need for an event loop checking the event type. 
+        # The makes the code more readable and easier to understand.
+        # https://stackoverflow.com/questions/66638465/whats-the-difference-betwen-pygame-key-get-pressed-and-event-type
 
-        draw_window()
+        # A sequence of boolean values is created to store the keys pressed by the user 
+        # using the pygame.key.get_pressed() function. 
+        # http://www.pygame.org/docs/ref/key.html#pygame.key.get_pressed
+        keys_pressed = pg.key.get_pressed()
+        # if the user is pressing the K_UP button the shooter is moved up
+        shooter.move_up(keys_pressed)
+        # if the user is pressing the K_DOWN button the shooter is moved down
+        # the DISPLAY_HEIGHT argument prevents the shooter from moving below the bottom of the display.
+        shooter.move_down(DISPLAY_HEIGHT, keys_pressed)
+        # the enemy then moves diagonally from boundary to boundary with the boundary 
+        # arguments preventing the enemy from moving outside the display.
+        enemy.move(LEFT_BOUNDARY, RIGHT_BOUNDARY, TOP_BOUNDARY, BOTTOM_BOUNDARY)
+        # if the user presses the space bar is pressed the bullet is fired
+        if keys_pressed[pg.K_SPACE]:
+            # a mask is made of the bullets coordinates taking into account the shooters
+            # height and the bullet size.
+            bullet_coordinates = [shooter.coordinates[0], shooter.coordinates[1] + shooter.height // 2 - bullet.height // 2]
+            # this is used as the starting point for the bullet
+            bullet.start(bullet_coordinates)
+        # the bullet is moved right. This methods checks to see if the bullet is fired before moving.
+        bullet.move_right()
+        # if the bullet collides with the right boundary, it equates to true.
+        if bullet.wall_collision(RIGHT_BOUNDARY):
+            # in which case the bullets coordinates are reset and is_moving attribute is set to false
+            bullet.stop()
+        # then all the elements are drawn to the display
+        draw_display()
+        # the clock is updated to the framerate
+        clock.tick(FPS)
+    # if user clicked the X on the screen the game is exited
     pg.quit()
     quit()
 
