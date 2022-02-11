@@ -99,6 +99,8 @@ def main():
     run_game = True
     # While the game is running
     while run_game:
+        # then all the elements are drawn to the display
+        draw_display()
         # for every event in the event queue
         for event in pg.event.get():
         # if the user quits the game the run game is set to false.
@@ -140,8 +142,6 @@ def main():
         if bullet.wall_collision(RIGHT_BOUNDARY):
             # in which case the bullets coordinates are reset and is_moving attribute is set to false
             bullet.stop()
-        # then all the elements are drawn to the display
-        draw_display()
         # the clock is updated to the framerate
         clock.tick(FPS)
     # if user clicked the X on the screen the game is exited
