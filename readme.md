@@ -4,7 +4,7 @@ Welcome to the Circuit Python Shooter Game with pygame and Circuit Board Express
 
 ## Main Branch
 
-Currently the main branch has the submission for the irst part of the project including
+The main branch has the submission for the first part of the project including
 
 - a class for the shooter
 - a class for the enemy
