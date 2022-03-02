@@ -1,26 +1,28 @@
-# create an instance of the controllerlightpatterns class
+from adafruit_circuitplayground import cp
+from neopixels import ControllerLightPatterns
+from time import sleep
 
-    # The appropriate classes/modules are imported. 
-    # Instances of both classes are created. 
+RED = (255,0,0)
+GREEN = (0, 255,0)
+BLUE = (0,0,255)
+MAGENTA = (255,0,255)
+CYAN = (0,255,255)
+YELLOW = (255,255,0)
 
-# if the boards switch is set to true  then the methods from the LightPatterns class
-# should be called with reference to the instance you created to generate a light pattern.
+controller = ControllerLightPatterns(0.1)
 
-    # The switch is implemented. 
+print(controller)
 
-# If the board’s switch is set to False, then the methods from the
-# ControllerLightPatterns class should be called with reference to the instance you
-# created to generate a series of patterns controlled by the board’s sensors.
-
-    # All of the methods in the instances of the 
-    # LightPatterns  and ControllerLightPatterns  
-    # classes are called in the continuous program 
-    # loop.
-
-# calling the methods is for testing purposes only.
-
-# Comments clearly demonstrate what the main 
-# code is achieving and what each method call is 
-# doing in the code. 
- 
- 
+while True:
+    if cp.switch:
+        controller.light_range(RED, [2,7])
+        sleep(1)
+        controller.random_lights(GREEN, 0.2)
+        controller.mirror_lights(BLUE)
+        controller.snake(5, YELLOW, 0.2)
+        sleep(1)
+    else:
+        x,y,z = cp.acceleration
+        controller.idle_state(z, CYAN, 0.2)
+        controller.half_light(x, GREEN)
+        controller.control_feedback(x, MAGENTA)
