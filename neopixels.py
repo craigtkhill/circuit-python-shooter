@@ -4,15 +4,14 @@ from random import randint
 
 class LightPatterns:
     BLACK = (0, 0, 0)
-    last_pixel_position = 0
+    cp.pixels.auto_write = False
+    num_pixels = len(cp.pixels)
 
     def __init__(self, brightness):
-        self.__num_pixels = len(cp.pixels)
         cp.pixels.brightness = brightness
-        cp.pixels.auto_write = False
 
     def __str__(self):
-        return f'Pixels {self.__num_pixels}, Brightness {cp.pixels.brightness}'
+        return f'Pixels {LightPatterns.num_pixels}, Brightness {cp.pixels.brightness}'
 
     def lights_off(self):
         cp.pixels.fill(LightPatterns.BLACK)
@@ -22,7 +21,7 @@ class LightPatterns:
         self.lights_off()
         if len(ran) != 2: return
         if min(ran) < 0: return
-        if max(ran) < 9: return
+        if max(ran) < LightPatterns.num_pixels: return
         else:
             for pixel in range(ran[0], ran[1] + 1):
                 cp.pixels[pixel] = color
@@ -32,7 +31,7 @@ class LightPatterns:
         self.lights_off()
         random_list = []
         while len(random_list) < 5:
-            random_num = randint(0, 9)
+            random_num = randint(0, LightPatterns.num_pixels - 1)
             if random_num not in random_list:
                 random_list.append(random_num)
         for _ in range(5):
@@ -44,20 +43,20 @@ class LightPatterns:
             sleep(interval)
 
     def mirror_lights(self, color):
-        for lights in range(5):
-            cp.pixels[lights] = color
-            cp.pixels[self.__num_pixels -1 - lights] = color
+        for pixel in range(LightPatterns.num_pixels // 2):
+            cp.pixels[pixel] = color
+            cp.pixels[LightPatterns.num_pixels -1 - pixel] = color
             cp.pixels.show()
             sleep(0.2)
         self.lights_off()
 
     def snake(self, snake_size, color, interval):
         self.lights_off()
-        if snake_size < 2 or snake_size > (self.__num_pixels // 2): return
+        if snake_size < 2 or snake_size > (LightPatterns.num_pixels // 2): return
         snake = list(range(snake_size))
         while len(snake) >1:
             for pixel in snake:
-                if snake[-1] > 9:
+                if snake[-1] > LightPatterns.num_pixels - 1:
                     snake.pop()
                 cp.pixels[pixel] = color
             cp.pixels.show()
@@ -76,11 +75,11 @@ class ControllerLightPatterns(LightPatterns):
     def half_light(self, acceleration_x, color):
         if abs(acceleration_x) <= 9.81:
             if acceleration_x > 3:
-                for pixel in range(self.__num_pixels // 2):
+                for pixel in range(LightPatterns.num_pixels // 2):
                     cp.pixels[pixel] = color
                 cp.pixels.show()
             elif acceleration_x < -3:
-                for pixel in range(self.__num_pixels // 2, self.__num_pixels):
+                for pixel in range(LightPatterns.num_pixels // 2, LightPatterns.num_pixels):
                     cp.pixels[pixel] = color
                 cp.pixels.show()
             else: self.lights_off()
@@ -89,11 +88,11 @@ class ControllerLightPatterns(LightPatterns):
         absolute_x = abs(acceleration_x)
         if absolute_x <= 9.81:
             if 2 <= acceleration_x <= 9.81:
-                scale_range = list(range(self.__num_pixels // 2))
+                scale_range = list(range(LightPatterns.num_pixels // 2))
             elif -2 >= acceleration_x >= -9.81:
-                scale_range = list(range(self.__num_pixels // 2, self.__num_pixels))
-            else: scale_range = []
-            last_pixel_position = int(absolute_x * self.__num_pixels / 9.81)
+                scale_range = list(range(LightPatterns.num_pixels // 2, LightPatterns.num_pixels))
+            else: return
+            last_pixel_position = int(absolute_x * LightPatterns.num_pixels / 9.81)
             if last_pixel_position > 0:
                 for pixel in scale_range:
                     if pixel <= last_pixel_position:
