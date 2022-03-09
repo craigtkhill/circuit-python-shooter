@@ -227,17 +227,21 @@ class ControllerLightPatterns(LightPatterns):
             # a list of values from 0 to half the number of pixels is initialized
             if 2 <= acceleration_x <= 9.81:
                 scale_range = list(range(LightPatterns.num_pixels // 2))
+                # the last pixel position is scaled
+                # the x acceleration is mapped to the neopixels by using
+                # the absolute x acceleration value times the number of pixels divided by acceleration peak
+                last_pixel_position = int(absolute_x * 5 / 9.81)
             # if the x acceleration is less than -2 and greater than -9.81
             # a list of values from half the number of pixels to the end is initialized
             elif -2 >= acceleration_x >= -9.81:
                 scale_range = list(range(LightPatterns.num_pixels // 2, LightPatterns.num_pixels))
+                # the last pixel position is scaled
+                last_pixel_position = int(absolute_x * LightPatterns.num_pixels / 9.81)
             # otherwise, the method returns without doing anything
             else: return
-            # the x acceleration is mapped to the neopixels by using
-            # the absolute x acceleration value times the number of pixels divided by acceleration peak
             last_pixel_position = int(absolute_x * LightPatterns.num_pixels / 9.81)
-            # if the end pixel position is greater than zero the code below is executed
-            if last_pixel_position > 0:
+            # if the end pixel position is not equal to zero the code below is executed
+            if last_pixel_position != 0:
                 # for each neopixel in its scaled range, the neopixel is lit up in the specified color
                 for pixel in scale_range:
                     if pixel <= last_pixel_position:
