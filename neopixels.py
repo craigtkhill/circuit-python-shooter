@@ -89,11 +89,13 @@ class ControllerLightPatterns(LightPatterns):
         if absolute_x <= 9.81:
             if 2 <= acceleration_x <= 9.81:
                 scale_range = list(range(LightPatterns.num_pixels // 2))
+                last_pixel_position = int(absolute_x * 5 / 9.81)
             elif -2 >= acceleration_x >= -9.81:
                 scale_range = list(range(LightPatterns.num_pixels // 2, LightPatterns.num_pixels))
+                last_pixel_position = int(absolute_x * LightPatterns.num_pixels / 9.81)
             else: return
             last_pixel_position = int(absolute_x * LightPatterns.num_pixels / 9.81)
-            if last_pixel_position > 0:
+            if last_pixel_position != 0:
                 for pixel in scale_range:
                     if pixel <= last_pixel_position:
                         cp.pixels[pixel] = color
