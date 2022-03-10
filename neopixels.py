@@ -21,7 +21,7 @@ class LightPatterns:
         self.lights_off()
         if len(ran) != 2: return
         if min(ran) < 0: return
-        if max(ran) < LightPatterns.num_pixels: return
+        if max(ran) > LightPatterns.num_pixels: return
         else:
             for pixel in range(ran[0], ran[1] + 1):
                 cp.pixels[pixel] = color
