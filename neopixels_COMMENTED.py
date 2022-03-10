@@ -44,10 +44,10 @@ class LightPatterns:
         # a list of two integers
         # the minimum value of the range is 0
         # the maximum value of the range is the number of neopixels
-        # if any of the conditions are met the method returns without doing anything
+        # if any of the conditions are not met the method returns without doing anything
         if len(ran) != 2: return
         if min(ran) < 0: return
-        if max(ran) < LightPatterns.num_pixels: return
+        if max(ran) > LightPatterns.num_pixels: return
         # otherwise the neopixels are lit up in the specified range
         else:
             for pixel in range(ran[0], ran[1] + 1): # +1 as range() is exclusive of last value
@@ -84,7 +84,7 @@ class LightPatterns:
             for pixel in random_list:
                 cp.pixels[pixel] = color
             cp.pixels.show()
-        # the neopixels staty lit for the specified interval
+        # the neopixels stay lit for the specified interval
             sleep(interval)
         # the neopixels are then turned off for the same specified interval
             self.lights_off()

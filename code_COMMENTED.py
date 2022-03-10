@@ -19,7 +19,7 @@ print(controller)
 while True:
     # if the switch is set to True the methods associated with the LightPatterns class are called
     if cp.switch:
-        # lights_range is call lighting the neopixels in from position 2 to 7 in red
+        # lights_range is called lighting the neopixels from position 2 to 7 in red
         controller.light_range(RED, [2,7])
         sleep(1) # the lights stay on for 1 second
         # random lights flash for 0.2 seconds in green
