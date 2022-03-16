@@ -10,7 +10,3 @@ The main branch has the submission for the first part of the project including
 - a class for the enemy
 - a class for the bullet
 - the main file runs the game and handles interactions between classes
-
-## Light-patterns Branch
-
-This branch is actively being developed adding code to handle the circuit board expresses neopixels
