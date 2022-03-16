@@ -1,4 +1,5 @@
 import pygame as pg
+from random import randint
 class Enemy:
     '''
     Class representing the enemy.
@@ -113,6 +114,42 @@ class Enemy:
             self.__y = bottom_bound - self.__size[1]
         # the enemy's coordinates are updated
         self.__coordinates = [self.__x, self.__y]
+
+    def relocate(self, top_bound, bottom_bound, left_bound, right_bound):
+        """
+        Reclocates the enemy to a random position within the bounds of the screen
+
+        Parameters
+        ----------
+            top_bound : int
+                the top boundary of the screen
+            bottom_bound : int
+                the bottom boundary of the screen
+            left_bound : int
+                the left boundary of the screen
+            right_bound : int
+                the right boundary of the screen
+        """
+        # The x and y coordinates are set to a number within the bounds of the screen
+        self.__x = randint(left_bound, right_bound)
+        self.__y = randint(top_bound, bottom_bound)
+        # The enemy's coordinates are updated
+        self.__coordinates = [self.__x, self.__y]
+
+    def change_speed(self, lower_limit, upper_limit):
+        """
+        Changes the speed of the enemy
+
+        Parameters
+        ----------
+            lower_limit : int
+                the lower limit of the speed
+            upper_limit : int
+                the upper limit of the speed
+        """
+        # The speed is assigned a random value between the lower and upper limits
+        self.__speed_x = randint(lower_limit, upper_limit)
+        self.__speed_y = randint(lower_limit, upper_limit)
 
 # Getters for coordinates and size of the enemy below.
 

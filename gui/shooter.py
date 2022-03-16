@@ -28,7 +28,7 @@ class Shooter:
         self.__y = y
         self.__coordinates = [self.__x, self.__y]
         # Size
-        self.__width = 20
+        self.__width = 30
         self.__height = 20
         self.__size = [self.__width, self.__height]
         # Color

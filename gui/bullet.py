@@ -1,4 +1,5 @@
 import pygame as pg
+from random import randint
 
 class Bullet:
     '''
@@ -60,11 +61,11 @@ class Bullet:
 
         Precondition: The bullet is moving.
         '''
-        # if the bullet has been fired
-        if self.check_moving():
         # the rectangular coordinates and size are stored in a variable
         # (https://www.pygame.org/docs/ref/rect.html)
-            bullet_rect = pg.Rect(self.__coordinates, self.__size)
+        bullet_rect = pg.Rect(self.__coordinates, self.__size)
+        # if the bullet has been fired
+        if self.check_moving():
             # pygame draws the rectangle to the display
             pg.draw.rect(display, self.__color, bullet_rect)
 
@@ -140,6 +141,20 @@ class Bullet:
         # Otherwise, the moving variable is set to False and True is returned
         self.__moving = False
         return True
+    
+    def change_size(self, lower_limit, upper_limit):
+        """
+        Changes the width of the Bullet
+
+        Parameters
+        ----------
+            lower_limit : int
+                the lower limit of the size
+            upper_limit : int
+                the upper limit of the size
+        """
+        # the width of the bullet is randomly generated within the bounds
+        self.__size[1] = randint(lower_limit,upper_limit)
 
 # Getters for coordinates and size of the bullet below.
 

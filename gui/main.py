@@ -2,6 +2,7 @@ import pygame as pg
 from shooter import Shooter
 from enemy import Enemy
 from bullet import Bullet
+from time import sleep
 
 pg.init()
 
@@ -54,7 +55,7 @@ enemy = Enemy(enemy_x, enemy_y, YELLOW, enemy_size, enemy_speed_x, enemy_speed_y
 
 # Bullet Variables
 bullet_size = [10, 5]
-bullet_speed = 20
+bullet_speed = 50
 # A bullet is instantiated
 bullet = Bullet(bullet_size, RED, bullet_speed)
 
@@ -143,6 +144,12 @@ def main():
             # in which case the bullets coordinates are reset and is_moving attribute is set to false
             bullet.stop()
         # the clock is updated to the framerate
+        if keys_pressed[pg.K_r]:
+            enemy.relocate(TOP_BOUNDARY, BOTTOM_BOUNDARY, LEFT_BOUNDARY, RIGHT_BOUNDARY)
+            enemy.change_speed(1, 30)
+            bullet.change_size(1, shooter.width)
+            sleep(0.5)
+
         clock.tick(FPS)
     # if user clicked the X on the screen the game is exited
     pg.quit()
