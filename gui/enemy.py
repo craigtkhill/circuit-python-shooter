@@ -131,8 +131,8 @@ class Enemy:
                 the right boundary of the screen
         """
         # The x and y coordinates are set to a number within the bounds of the screen
-        self.__x = randint(left_bound, right_bound)
-        self.__y = randint(top_bound, bottom_bound)
+        self.__x = randint(left_bound, right_bound - self.width)
+        self.__y = randint(top_bound, bottom_bound - self.height)
         # The enemy's coordinates are updated
         self.__coordinates = [self.__x, self.__y]
 
@@ -154,19 +154,31 @@ class Enemy:
 # Getters for coordinates and size of the enemy below.
 
     @property
-    def coordinates(self):
+    def coordinates_x(self):
         '''
-        Gets the coordinates of the enemy.
+        Gets the x coordinate of the enemy.
 
         Returns
         -------
             coordinates : list
-                the x and y coordinates of the enemy
+                the x coordinate of the enemy
         '''
-        return self.__coordinates
+        return self.__coordinates[0]
 
     @property
-    def heigth(self):
+    def coordinates_y(self):
+        '''
+        Gets the y coordinate of the enemy.
+
+        Returns
+        -------
+            coordinates : list
+                the y coordinate of the enemy
+        '''
+        return self.__coordinates[1]
+
+    @property
+    def height(self):
         '''
         Gets the height of the enemy.
 
@@ -175,7 +187,7 @@ class Enemy:
             size : int
                 the height of the enemy
         '''
-        return self.__height
+        return self.__size[0]
 
 
     @property
@@ -188,4 +200,4 @@ class Enemy:
             size : int
                 the width of the enemy
         '''
-        return self.__width
+        return self.__size[1]

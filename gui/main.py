@@ -3,6 +3,22 @@ from shooter import Shooter
 from enemy import Enemy
 from bullet import Bullet
 from time import sleep
+from math import sqrt
+
+def check_collision(bullet, enemy):
+    """
+    Function to check if the bullet has collided with the enemy.
+
+    """
+    # if (
+    #     bullet.coordinates[0] + bullet.width > enemy.coordinates[0]
+    #     and bullet.coordinates[1] + bullet.height > enemy.coordinates[1]
+    #     and bullet.coordinates[1] < enemy.coordinates[1] + enemy.height
+    # ):
+    dist = sqrt((bullet.coordinate_x - enemy.coordinates_x)**2 + (bullet.coordinate_y - enemy.coordinates_y)**2)
+    if dist <= bullet.width + enemy.width:
+        return True
+    return False
 
 pg.init()
 
@@ -143,13 +159,13 @@ def main():
         if bullet.wall_collision(RIGHT_BOUNDARY):
             # in which case the bullets coordinates are reset and is_moving attribute is set to false
             bullet.stop()
-        # the clock is updated to the framerate
-        if keys_pressed[pg.K_r]:
+        elif check_collision(bullet, enemy):
+            bullet.stop()
             enemy.relocate(TOP_BOUNDARY, BOTTOM_BOUNDARY, LEFT_BOUNDARY, RIGHT_BOUNDARY)
-            enemy.change_speed(1, 30)
+            enemy.change_speed(1, 10)
             bullet.change_size(1, shooter.width)
-            sleep(0.5)
-
+            #sleep(0.3)
+        # the clock is updated to the framerate
         clock.tick(FPS)
     # if user clicked the X on the screen the game is exited
     pg.quit()

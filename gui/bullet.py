@@ -159,16 +159,28 @@ class Bullet:
 # Getters for coordinates and size of the bullet below.
 
     @property
-    def coordinates(self):
+    def coordinate_x(self):
         '''
-        Gets the coordinates of the bullet.
+        Gets the x coordinate of the bullet.
 
         Returns
         -------
-            coordinates : list
-                the x and y coordinates of the bullet
+            coordinates : int
+                the x coordinate of the bullet
         '''
-        return self.__coordinates
+        return self.__coordinates[0]
+
+    @property
+    def coordinate_y(self):
+        '''
+        Gets the y coordinate of the bullet.
+
+        Returns
+        -------
+            coordinates : int
+                the y coordinate of the bullet
+        '''
+        return self.__coordinates[1]
 
     @property
     def height(self):
