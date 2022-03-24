@@ -16,6 +16,8 @@ def check_collision(bullet, enemy):
     return False
 
 pg.init()
+pg.font.init() 
+font = pg.font.SysFont('Verdana', 50)
 
 # The display width and height and stored in variables using multiple assignment
 # https://stackoverflow.com/questions/5495332/more-elegant-way-of-declaring-multiple-variables-at-the-same-time
@@ -84,7 +86,7 @@ TOP_BOUNDARY = 0
 # The bottom boundary for the enemy is the height of the display
 BOTTOM_BOUNDARY = DISPLAY_HEIGHT
 
-def draw_display():
+def draw_display(score):
     """
     Function to draw elements to the display.
 
@@ -103,6 +105,10 @@ def draw_display():
     enemy.draw(DISPLAY)
     # If the bullet is moving, it is drawn to the display.
     bullet.draw(DISPLAY)
+    # draw score to the screen
+    textsurface = font.render(str(score), False, WHITE)
+    text_width = textsurface.get_width()
+    DISPLAY.blit(textsurface,(DISPLAY_WIDTH // 2 - text_width // 2,0))
     # The display is updated.
     pg.display.update()
 
@@ -114,10 +120,12 @@ def main():
     clock = pg.time.Clock()
     # the run game variable is initially set to true
     run_game = True
+    #initalise the score to zero
+    score = 0
     # While the game is running
     while run_game:
         # then all the elements are drawn to the display
-        draw_display()
+        draw_display(score)
         # for every event in the event queue
         for event in pg.event.get():
         # if the user quits the game the run game is set to false.
@@ -161,10 +169,10 @@ def main():
             bullet.stop()
         elif check_collision(bullet, enemy):
             bullet.stop()
+            score += abs(enemy.speed_x * enemy.speed_y)
             enemy.relocate(TOP_BOUNDARY, BOTTOM_BOUNDARY, LEFT_BOUNDARY, RIGHT_BOUNDARY)
             enemy.change_speed(1, 20)
             bullet.change_size(1, shooter.width)
-            #sleep(0.3)
         # the clock is updated to the framerate
         clock.tick(FPS)
     # if user clicked the X on the screen the game is exited

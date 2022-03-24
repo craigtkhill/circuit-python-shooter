@@ -201,3 +201,27 @@ class Enemy:
                 the width of the enemy
         '''
         return self.__size[1]
+
+    @property
+    def speed_x(self):
+        """
+        Gets the speed of the enemy on the x axis
+
+        Returns
+        -------
+            size : int
+                the speed of the enemy on x axis
+        """
+        return self.__speed_x
+
+    @property
+    def speed_y(self):
+        """
+        Gets the speed of the enemy on the y axis
+
+        Returns
+        -------
+            size : int
+                the speed of the enemy on y axis
+        """
+        return self.__speed_y
