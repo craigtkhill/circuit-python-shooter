@@ -29,8 +29,6 @@ pg.display.set_caption("Python Circuit Shooter")
 
 # The background image is loaded
 bg = pg.image.load("blits/space.jpg")
-ship = pg.image.load("blits/ship.bmp")
-alien = pg.image.load("blits/alien.bmp")
 
 # Colors are assigned to RGB values in tuples
 WHITE = (255, 255, 255)
