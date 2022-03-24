@@ -10,11 +10,6 @@ def check_collision(bullet, enemy):
     Function to check if the bullet has collided with the enemy.
 
     """
-    # if (
-    #     bullet.coordinates[0] + bullet.width > enemy.coordinates[0]
-    #     and bullet.coordinates[1] + bullet.height > enemy.coordinates[1]
-    #     and bullet.coordinates[1] < enemy.coordinates[1] + enemy.height
-    # ):
     dist = sqrt((bullet.coordinate_x - enemy.coordinates_x)**2 + (bullet.coordinate_y - enemy.coordinates_y)**2)
     if dist <= bullet.width + enemy.width:
         return True
@@ -32,15 +27,20 @@ DISPLAY = pg.display.set_mode(DISPLAY_SIZE)
 # A caption is set for the game https://www.pygame.org/docs/ref/display.html#pygame.display.set_caption
 pg.display.set_caption("Python Circuit Shooter")
 
+# The background image is loaded
+bg = pg.image.load("blits/space.jpg")
+ship = pg.image.load("blits/ship.bmp")
+alien = pg.image.load("blits/alien.bmp")
+
 # Colors are assigned to RGB values in tuples
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 YELLOW = (240, 210, 10)
 RED = (250, 70, 90)
-GREY = (240, 240, 240)
+BLUE = (77, 150, 255)
 
 # The boundary rectangle separating the shooter from the enemy is created using the following variables
-BORDER_WIDTH = 10
+BORDER_WIDTH = 1
 BORDER_HEIGHT = DISPLAY_HEIGHT
 # BORDER_X accounts for the width of the border
 BORDER_X = DISPLAY_WIDTH // 2 - BORDER_WIDTH // 2
@@ -56,24 +56,24 @@ FPS = 60
 # Shooter Variables
 shooter_x = 100
 shooter_y = 100
-shooter_speed = 5
+shooter_speed = 10
 # a shooter is instantiated
-shooter = Shooter(shooter_x, shooter_y, BLACK, shooter_speed)
+shooter = Shooter(shooter_x, shooter_y, BLUE, shooter_speed)
 
 # Enemy Variables
 enemy_x = 400
 enemy_y = 400
-enemy_size = [20, 30]
+enemy_size = [25, 25]
 enemy_speed_x = 10
 enemy_speed_y = 10
 # An enemy is instantiated
-enemy = Enemy(enemy_x, enemy_y, YELLOW, enemy_size, enemy_speed_x, enemy_speed_y)
+enemy = Enemy(enemy_x, enemy_y, RED, enemy_size, enemy_speed_x, enemy_speed_y)
 
 # Bullet Variables
 bullet_size = [10, 5]
 bullet_speed = 50
 # A bullet is instantiated
-bullet = Bullet(bullet_size, RED, bullet_speed)
+bullet = Bullet(bullet_size, YELLOW, bullet_speed)
 
 # The left boundary for the enemy is the right of the rectangle border drawn in the center
 # This rectangle object has an attribute 'right' that allows us to access the
@@ -94,9 +94,11 @@ def draw_display():
     of the game keeping the code cleaner and more readable.
     """
     # The display is cleared and the backgound filled with white.
-    DISPLAY.fill(WHITE)
+    #DISPLAY.fill(WHITE)
+    # The display is filled with an image of space
+    DISPLAY.blit(bg, (0, 0))
     # A rectangle representing the boundary between the shooter and the enemy is drawn.
-    pg.draw.rect(DISPLAY, GREY, BORDER)
+    pg.draw.rect(DISPLAY, BLACK, BORDER)
     # The shooter is drawn to the display.
     shooter.draw(DISPLAY)
     # The enemy is drawn to the display.
@@ -162,7 +164,7 @@ def main():
         elif check_collision(bullet, enemy):
             bullet.stop()
             enemy.relocate(TOP_BOUNDARY, BOTTOM_BOUNDARY, LEFT_BOUNDARY, RIGHT_BOUNDARY)
-            enemy.change_speed(1, 10)
+            enemy.change_speed(1, 20)
             bullet.change_size(1, shooter.width)
             #sleep(0.3)
         # the clock is updated to the framerate
