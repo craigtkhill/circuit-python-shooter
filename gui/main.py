@@ -9,12 +9,21 @@ def check_collision(bullet, enemy):
     """
     Function to check if the bullet has collided with the enemy.
 
+    Parameters:
+    -----------
+        bullet: Bullet object
+        enemy: Enemy object
     """
+    # the distance between the bullet and the enemy is calculated using the pythagorean theorem
     dist = sqrt((bullet.coordinate_x - enemy.coordinates_x)**2 + (bullet.coordinate_y - enemy.coordinates_y)**2)
+    # if the distance is less than the sum of the bullet plus it width and 
+    # the enemy plus its width then a collision has occured and true is returned.
     if dist <= bullet.width + enemy.width:
         return True
+    # otherwise false is returned
     return False
 
+# a font object is created to display the score to the screen (https://www.geeksforgeeks.org/python-display-text-to-pygame-window/)
 pg.init()
 pg.font.init() 
 font = pg.font.SysFont('Verdana', 50)
@@ -29,7 +38,8 @@ DISPLAY = pg.display.set_mode(DISPLAY_SIZE)
 # A caption is set for the game https://www.pygame.org/docs/ref/display.html#pygame.display.set_caption
 pg.display.set_caption("Python Circuit Shooter")
 
-# The background image is loaded
+# A background image is loaded (https://stackoverflow.com/questions/28005641/how-to-add-a-background-image-into-pygame)
+# image source: (NASA/ESA) https://www.bbc.com/news/science-environment-57885865
 bg = pg.image.load("blits/space.jpg")
 
 # Colors are assigned to RGB values in tuples
@@ -38,6 +48,7 @@ BLACK = (0, 0, 0)
 YELLOW = (240, 210, 10)
 RED = (250, 70, 90)
 BLUE = (77, 150, 255)
+GREEN = (107, 203, 119)
 
 # The boundary rectangle separating the shooter from the enemy is created using the following variables
 BORDER_WIDTH = 1
@@ -58,7 +69,7 @@ shooter_x = 100
 shooter_y = 100
 shooter_speed = 10
 # a shooter is instantiated
-shooter = Shooter(shooter_x, shooter_y, BLUE, shooter_speed)
+shooter = Shooter(shooter_x, shooter_y, GREEN, shooter_speed)
 
 # Enemy Variables
 enemy_x = 400
@@ -90,11 +101,14 @@ def draw_display(score):
     """
     Function to draw elements to the display.
 
+    Parameters:
+    -----------
+        score: int
+            current score to be displayed to the screen
+
     This helps to separate the drawing of elements from the logic
     of the game keeping the code cleaner and more readable.
     """
-    # The display is cleared and the backgound filled with white.
-    #DISPLAY.fill(WHITE)
     # The display is filled with an image of space
     DISPLAY.blit(bg, (0, 0))
     # A rectangle representing the boundary between the shooter and the enemy is drawn.
@@ -105,9 +119,12 @@ def draw_display(score):
     enemy.draw(DISPLAY)
     # If the bullet is moving, it is drawn to the display.
     bullet.draw(DISPLAY)
-    # draw score to the screen
+    # the score is drawn to the screen (https://www.geeksforgeeks.org/python-display-text-to-pygame-window/)
     textsurface = font.render(str(score), False, WHITE)
+    # the width of the text is stored in a variable using the get_width method
     text_width = textsurface.get_width()
+    # and the text is drawn to the display using the blit method with its positioning
+    # centred in the display
     DISPLAY.blit(textsurface,(DISPLAY_WIDTH // 2 - text_width // 2,0))
     # The display is updated.
     pg.display.update()
@@ -167,11 +184,16 @@ def main():
         if bullet.wall_collision(RIGHT_BOUNDARY):
             # in which case the bullets coordinates are reset and is_moving attribute is set to false
             bullet.stop()
+        # if the bullet collides with the enemy
         elif check_collision(bullet, enemy):
+            # the bullet is stopped and the score is incremented by the enemy's speed
             bullet.stop()
             score += abs(enemy.speed_x * enemy.speed_y)
+            # the enemy is then relocated within the bounds of the display
             enemy.relocate(TOP_BOUNDARY, BOTTOM_BOUNDARY, LEFT_BOUNDARY, RIGHT_BOUNDARY)
+            # and the enemy's speeds are reset to values between 1 and 20
             enemy.change_speed(1, 20)
+            # the bullet size is changed to a random value between 1 and the width of the shooter
             bullet.change_size(1, shooter.width)
         # the clock is updated to the framerate
         clock.tick(FPS)
