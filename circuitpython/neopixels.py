@@ -1,103 +1,72 @@
 from adafruit_circuitplayground import cp
-from time import sleep
-from random import randint
 
 class LightPatterns:
-    BLACK = (0, 0, 0)
-    cp.pixels.auto_write = False
-    num_pixels = len(cp.pixels)
+    BLACK = (0, 0, 0) # variable to turn neopixels black
+    cp.pixels.auto_write = False # neopixels will only update with show method called
+    num_pixels = len(cp.pixels) # number of neopixels is equal to the length of cp.pixels
 
     def __init__(self, brightness):
         cp.pixels.brightness = brightness
 
-    def __str__(self):
+    def __str__(self): # string representation of the LightPatterns class with number of neopixels and brightness
         return f'Pixels {LightPatterns.num_pixels}, Brightness {cp.pixels.brightness}'
 
-    def lights_off(self):
-        cp.pixels.fill(LightPatterns.BLACK)
-        cp.pixels.show()
+    def lights_off(self): # turns neopixels off
+        cp.pixels.fill(LightPatterns.BLACK) # the neopixels color are set to black
+        cp.pixels.show() # and the neopixels are updated
 
-    def mirror_lights(self, color):
-        for pixel in range(LightPatterns.num_pixels // 2):
-            cp.pixels[pixel] = color
-            cp.pixels[LightPatterns.num_pixels -1 - pixel] = color
-            cp.pixels.show()
-            sleep(0.2)
-        self.lights_off()
-
-    def snake(self, snake_size, color, interval):
-        self.lights_off()
-        if snake_size < 2 or snake_size > (LightPatterns.num_pixels // 2): return
-        snake = list(range(snake_size))
-        while len(snake) >1:
-            for pixel in snake:
-                if snake[-1] > LightPatterns.num_pixels - 1:
-                    snake.pop()
-                cp.pixels[pixel] = color
-            cp.pixels.show()
-            sleep(interval)
-            snake.append(snake[-1] +1)
-            snake.pop(0)
-            self.lights_off()
-
-    def smiley_face(self, colors):
+    def smiley_face(self, colors): # lights up the board with a smiley face
+        # the mouth is created by creating lists of the neopixels from 0 to a third of the board
+        # and the last third of the board to the end
+        # and joining the lists together
         right_mouth = list(range(LightPatterns.num_pixels // 3))
         left_mouth = list(range(LightPatterns.num_pixels - (LightPatterns.num_pixels // 3), LightPatterns.num_pixels))
         mouth = right_mouth + left_mouth
-        cheeks = [pixel for pixel in range(LightPatterns.num_pixels) if pixel %3 == 0 and pixel != 0 and pixel != LightPatterns.num_pixels - 1]
-        for pixel in range(LightPatterns.num_pixels):
-            if pixel in mouth and pixel not in cheeks:
-                cp.pixels[pixel] = colors[0]
-            elif pixel in cheeks:
-                cp.pixels[pixel] = LightPatterns.BLACK 
-            else:
-                cp.pixels[pixel] = colors[1]
-        cp.pixels.show()
+        # the eyes are the two neopixels halfway on the board
+        eyes = [(LightPatterns.num_pixels // 2) , (LightPatterns.num_pixels // 2) -1]
+        for pixel in range(LightPatterns.num_pixels): # for each pixel on the board
+            if pixel in mouth: # if the neopixels are in the position of the mouth
+                cp.pixels[pixel] = colors[0] # they are colored (red)
+            elif pixel in eyes: # if the neopixels are in the positon of the eyes
+                cp.pixels[pixel] = colors[1] # they are colored (cyan)
+            else: # otherwise the neopixels are colored black
+                cp.pixels[pixel] = LightPatterns.BLACK
+        cp.pixels.show() # and the neopixels are updated
 
 
-class ControllerLightPatterns(LightPatterns):
+class ControllerLightPatterns(LightPatterns): # class providing feedback on the degree of tilt
+    # inherits init, str and other methods from the LightPatterns class
 
-    def idle_state(self, acceleration_z, color, interval):
-        if acceleration_z <= -7 and acceleration_z >= -9.81:
-            self.snake(5, color, interval)
-        else: self.lights_off()
-
-    def half_light(self, acceleration_x, color):
-        if abs(acceleration_x) <= 9.81:
-            if acceleration_x > 3:
-                for pixel in range(LightPatterns.num_pixels // 2):
-                    cp.pixels[pixel] = color
-                cp.pixels.show()
-            elif acceleration_x < -3:
-                for pixel in range(LightPatterns.num_pixels // 2, LightPatterns.num_pixels):
-                    cp.pixels[pixel] = color
-                cp.pixels.show()
-            else: self.lights_off()
-
-    def control_feedback(self, acceleration_y, color):
-        absolute_y = abs(acceleration_y)
+    def control_feedback(self, acceleration_y, color): 
+        # lights up the the top of the board in a mirror pattern with more pixels the greater the tilt
+        absolute_y = abs(acceleration_y) # the absolute value of acceleration y is stored in a variable
+        # the number of pixels is stored in a variable using the light patterns class variable 
+        # to make the following code more readable
         num_pixels = LightPatterns.num_pixels
-        lower_bound = num_pixels // 4
-        upper_bound = num_pixels - (num_pixels // 4)
-        if absolute_y <= 9.81:
-            if acceleration_y > 3:
-                scale_range = list(range(lower_bound, upper_bound))
-                last_pixel_position = int(absolute_y * 5 / 9.81)
-            else: return
-            for pixel in scale_range:
-                if pixel <= last_pixel_position:
-                    cp.pixels[pixel] = color
-                    cp.pixels[LightPatterns.num_pixels -1 - pixel] = color
-                cp.pixels.show()
-        else: self.lights_off()
+        lower_bound = num_pixels // 4 # the lower bound of the neopixels is a quarter the number of neopixels (3)
+        upper_bound = num_pixels - (num_pixels // 4) # the upper bound is the number of pixels minus a quarter (9 - 3 = 6)
+        if absolute_y <= 9.81: # if the absolute y is less than or equal to 9.81
+            if acceleration_y > 3: # and acceleration y is greater than 3
+            # a list of neopixels is created from the lowerbound to the upperbound (3 -> 6)
+                neopixels = list(range(lower_bound, upper_bound)) 
+                # the last pixels position is the acceleration values times half the number of pixels 
+                # scaled to the highest possible acceleration values
+                last_pixel_position = int(absolute_y * (num_pixels // 2) / 9.81)
+            else: return # if the acceleration values is less than three, the method is exited
+            for pixel in neopixels: # for each pixel in the range of neopixels
+                if pixel <= last_pixel_position: # if the pixel number is is less than or equal to the last pixel position
+                    cp.pixels[pixel] = color # the pixel is colored
+                    cp.pixels[LightPatterns.num_pixels -1 - pixel] = color # and the pixel on the opposite side is also colored 
+                cp.pixels.show() # the pixels are then updated
+        else: self.lights_off() # if the acceleration values is not between -9.81 and 9.81, the lights are turned off
 
-    def modified_feedback_control(self, acceleration_y, colors):
-        if abs(acceleration_y) <= 9.81:
-            if acceleration_y < -3:
-                self.smiley_face(colors)
-                #self.mirror_lights(color[0])
-            elif acceleration_y >3:
-                self.control_feedback(acceleration_y,colors[2])
-            else:
+    def modified_feedback_control(self, acceleration_y, colors): 
+        # updates the lights patterns depending on the direction the board is tilted
+        if abs(acceleration_y) <= 9.81: # if the absolute y value is less than or equal to 9.81
+            if acceleration_y < -3: # and acceleration y is less than -3
+                self.smiley_face(colors) # the smiley_face method is called
+            elif acceleration_y >3: # if the acceleration y is greater than 3
+                self.control_feedback(acceleration_y, colors[2]) # the control_feedback method is called
+            else: # if the acceleration y value is between -3 and 3 then the lights are turned off
                 self.lights_off()
 
