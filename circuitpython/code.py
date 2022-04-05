@@ -6,7 +6,6 @@ from adafruit_hid.keycode import Keycode
 
 kbd = Keyboard(usb_hid.devices) # keyboard device is setup 
 
-acceleration_y = 0 # variable containing the acceleration y value
 acceleration_peak = 9.81 # variable containing the maximum acceleration value
 bullet_fired = False # boolean holding the state of the bullet
 
