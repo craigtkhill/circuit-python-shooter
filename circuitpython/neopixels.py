@@ -65,7 +65,7 @@ class ControllerLightPatterns(LightPatterns): # class providing feedback degree 
         # updates the lights patterns depending on the direction the board is tilted
         if abs(acceleration_y) <= 9.81: # if the absolute y value is less than or equal to 9.81
             if acceleration_y < -3: # and acceleration y is less than -3
-                self.smiley_face(colors) # the smiley_face method is called
+                self.smiley_face(colors) # the smiley_face method is called from the LightPatterns class
             elif acceleration_y > 3: # if the acceleration y is greater than 3
                 self.control_feedback(acceleration_y, colors[2]) # the control_feedback method is called
             else: # if the acceleration y value is between -3 and 3 then the lights are turned off
