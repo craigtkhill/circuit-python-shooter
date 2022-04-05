@@ -2,7 +2,6 @@ import pygame as pg
 from shooter import Shooter
 from enemy import Enemy
 from bullet import Bullet
-from time import sleep
 from math import sqrt
 
 def check_collision(bullet, enemy):
@@ -15,6 +14,7 @@ def check_collision(bullet, enemy):
         enemy: Enemy object
     """
     # the distance between the bullet and the enemy is calculated using the pythagorean theorem
+    # (https://en.wikipedia.org/wiki/Pythagorean_theorem)
     dist = sqrt((bullet.coordinate_x - enemy.coordinates_x)**2 + (bullet.coordinate_y - enemy.coordinates_y)**2)
     # if the distance is less than the sum of the bullet plus it width and 
     # the enemy plus its width then a collision has occured and true is returned.
@@ -23,116 +23,86 @@ def check_collision(bullet, enemy):
     # otherwise false is returned
     return False
 
-# a font object is created to display the score to the screen (https://www.geeksforgeeks.org/python-display-text-to-pygame-window/)
-pg.init()
-pg.font.init() 
-font = pg.font.SysFont('Verdana', 50)
-
-# The display width and height and stored in variables using multiple assignment
-# https://stackoverflow.com/questions/5495332/more-elegant-way-of-declaring-multiple-variables-at-the-same-time
-DISPLAY_WIDTH, DISPLAY_HEIGHT = 900, 600
-# The display size is stored in a tuple
-DISPLAY_SIZE = (DISPLAY_WIDTH, DISPLAY_HEIGHT)
-# Pygame sets the display using the display size
-DISPLAY = pg.display.set_mode(DISPLAY_SIZE)
-# A caption is set for the game https://www.pygame.org/docs/ref/display.html#pygame.display.set_caption
-pg.display.set_caption("Python Circuit Shooter")
-
-# A background image is loaded (https://stackoverflow.com/questions/28005641/how-to-add-a-background-image-into-pygame)
-# image source: (NASA/ESA) https://www.bbc.com/news/science-environment-57885865
-bg = pg.image.load("blits/space.jpg")
-
-# Colors are assigned to RGB values in tuples
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-YELLOW = (240, 210, 10)
-RED = (250, 70, 90)
-BLUE = (77, 150, 255)
-GREEN = (107, 203, 119)
-
-# The boundary rectangle separating the shooter from the enemy is created using the following variables
-BORDER_WIDTH = 1
-BORDER_HEIGHT = DISPLAY_HEIGHT
-# BORDER_X accounts for the width of the border
-BORDER_X = DISPLAY_WIDTH // 2 - BORDER_WIDTH // 2
-BORDER_Y = 0
-
-# the rectangular coordinates and size are stored in a Rect object https://www.pygame.org/docs/ref/rect.html
-# this represents a thin rectangle border separating the shooter and the enemy
-BORDER = pg.Rect(BORDER_X, BORDER_Y, BORDER_WIDTH, BORDER_HEIGHT)
-
-# Framerate is stored as a constant variable set to 60 frames per second
-FPS = 60
-
-# Shooter Variables
-shooter_x = 100
-shooter_y = 100
-shooter_speed = 10
-# a shooter is instantiated
-shooter = Shooter(shooter_x, shooter_y, GREEN, shooter_speed)
-
-# Enemy Variables
-enemy_x = 400
-enemy_y = 400
-enemy_size = [25, 25]
-enemy_speed_x = 10
-enemy_speed_y = 10
-# An enemy is instantiated
-enemy = Enemy(enemy_x, enemy_y, RED, enemy_size, enemy_speed_x, enemy_speed_y)
-
-# Bullet Variables
-bullet_size = [10, 5]
-bullet_speed = 50
-# A bullet is instantiated
-bullet = Bullet(bullet_size, YELLOW, bullet_speed)
-
-# The left boundary for the enemy is the right of the rectangle border drawn in the center
-# This rectangle object has an attribute 'right' that allows us to access the
-# coordinate of the right side of the border
-LEFT_BOUNDARY = BORDER.right
-# The right boundary of the enemy is the width of the display
-RIGHT_BOUNDARY = DISPLAY_WIDTH
-# The top boundary for the enemy is zero
-TOP_BOUNDARY = 0
-# The bottom boundary for the enemy is the height of the display
-BOTTOM_BOUNDARY = DISPLAY_HEIGHT
-
-def draw_display(score):
-    """
-    Function to draw elements to the display.
-
-    Parameters:
-    -----------
-        score: int
-            current score to be displayed to the screen
-
-    This helps to separate the drawing of elements from the logic
-    of the game keeping the code cleaner and more readable.
-    """
-    # The display is filled with an image of space
-    DISPLAY.blit(bg, (0, 0))
-    # A rectangle representing the boundary between the shooter and the enemy is drawn.
-    pg.draw.rect(DISPLAY, BLACK, BORDER)
-    # The shooter is drawn to the display.
-    shooter.draw(DISPLAY)
-    # The enemy is drawn to the display.
-    enemy.draw(DISPLAY)
-    # If the bullet is moving, it is drawn to the display.
-    bullet.draw(DISPLAY)
-    # the score is drawn to the screen (https://www.geeksforgeeks.org/python-display-text-to-pygame-window/)
-    textsurface = font.render(str(score), False, WHITE)
-    # the width of the text is stored in a variable using the get_width method
-    text_width = textsurface.get_width()
-    # and the text is drawn to the display using the blit method with its positioning
-    # centred in the display
-    DISPLAY.blit(textsurface,(DISPLAY_WIDTH // 2 - text_width // 2,0))
-    # The display is updated.
-    pg.display.update()
-
 def main():
     """
-    Function to run the game and handle the games logic.
+    Function to run the game and handle the game logic.
     """
+    # Objects in the game are initialised here. 
+
+    # The display width and height and stored in variables using multiple assignment
+    # (https://stackoverflow.com/questions/5495332/more-elegant-way-of-declaring-multiple-variables-at-the-same-time)
+    DISPLAY_WIDTH, DISPLAY_HEIGHT = 900, 600
+    # The display size is stored in a tuple
+    DISPLAY_SIZE = (DISPLAY_WIDTH, DISPLAY_HEIGHT)
+    # Pygame sets the display using the display size
+    DISPLAY = pg.display.set_mode(DISPLAY_SIZE)
+    # A caption is set for the game (https://www.pygame.org/docs/ref/display.html#pygame.display.set_caption)
+    pg.display.set_caption("Space Operation")
+
+    # A background image is loaded (https://stackoverflow.com/questions/28005641/how-to-add-a-background-image-into-pygame)
+    # image source: (NASA/ESA) (https://www.bbc.com/news/science-environment-57885865)
+    bg = pg.image.load("blits/space.jpg")
+
+    # a font object is created to display the score to the screen (https://www.geeksforgeeks.org/python-display-text-to-pygame-window/)
+    pg.init()
+    pg.font.init()
+    # and the font is set to Verdana size 50
+    font = pg.font.SysFont('Verdana', 50)
+
+    # Colors are assigned to RGB values in tuples
+    WHITE = (255, 255, 255)
+    BLACK = (0, 0, 0)
+    YELLOW = (240, 210, 10)
+    RED = (250, 70, 90)
+    BLUE = (77, 150, 255)
+    GREEN = (107, 203, 119)
+
+    # The boundary rectangle separating the shooter from the enemy is created using the following variables
+    BORDER_WIDTH = 1
+    BORDER_HEIGHT = DISPLAY_HEIGHT
+    # BORDER_X accounts for the width of the border
+    BORDER_X = DISPLAY_WIDTH // 2 - BORDER_WIDTH // 2
+    BORDER_Y = 0
+
+    # the rectangular coordinates and size are stored in a Rect object (https://www.pygame.org/docs/ref/rect.html)
+    # this represents a thin rectangle border separating the shooter and the enemy
+    BORDER = pg.Rect(BORDER_X, BORDER_Y, BORDER_WIDTH, BORDER_HEIGHT)
+
+    # Framerate is stored as a constant variable set to 60 frames per second
+    FPS = 60
+
+    # Shooter Variables
+    shooter_x = 100
+    shooter_y = 100
+    shooter_speed = 10
+    # a shooter is instantiated
+    shooter = Shooter(shooter_x, shooter_y, GREEN, shooter_speed)
+
+    # Enemy Variables
+    enemy_x = 400
+    enemy_y = 400
+    enemy_size = [25, 25]
+    enemy_speed_x = 10
+    enemy_speed_y = 10
+    # An enemy is instantiated
+    enemy = Enemy(enemy_x, enemy_y, RED, enemy_size, enemy_speed_x, enemy_speed_y)
+
+    # Bullet Variables
+    bullet_size = [10, 5]
+    bullet_speed = 50
+    # A bullet is instantiated
+    bullet = Bullet(bullet_size, YELLOW, bullet_speed)
+
+    # The left boundary for the enemy is the right of the rectangle border drawn in the center
+    # This rectangle object has an attribute 'right' that allows us to access the
+    # coordinate of the right side of the border
+    LEFT_BOUNDARY = BORDER.right
+    # The right boundary of the enemy is the width of the display
+    RIGHT_BOUNDARY = DISPLAY_WIDTH
+    # The top boundary for the enemy is zero
+    TOP_BOUNDARY = 0
+    # The bottom boundary for the enemy is the height of the display
+    BOTTOM_BOUNDARY = DISPLAY_HEIGHT
     # a clock object is created to monitor the framerate
     clock = pg.time.Clock()
     # the run game variable is initially set to true
@@ -141,8 +111,30 @@ def main():
     score = 0
     # While the game is running
     while run_game:
-        # then all the elements are drawn to the display
-        draw_display(score)
+        # first all the elements are drawn to the display
+        # The display is filled with a background image of space
+        DISPLAY.blit(bg, (0, 0))
+        # A rectangle representing the boundary between the shooter and the enemy is drawn.
+        pg.draw.rect(DISPLAY, BLACK, BORDER)
+        # The shooter is drawn to the display.
+        shooter.draw(DISPLAY)
+        # The enemy is drawn to the display.
+        enemy.draw(DISPLAY)
+        # If the bullet is moving, it is drawn to the display.
+        bullet.draw(DISPLAY)
+        # the score is rendered to the screen using a white text surface
+        # (https://www.geeksforgeeks.org/python-display-text-to-pygame-window/)
+        textsurface = font.render(str(score), True, WHITE)
+        # the width of the text is stored in a variable using the get_width method
+        # (https://stackoverflow.com/questions/25149892/how-to-get-the-width-of-text-using-pygame)
+        text_width = textsurface.get_width()
+        # and the text is drawn to the display using the blit method with its positioning
+        # centred in the display at the top
+        DISPLAY.blit(textsurface,(DISPLAY_WIDTH // 2 - text_width // 2, 0))
+        # The display is then updated.
+        pg.display.update()
+
+        # The events are checked for each frame.
         # for every event in the event queue
         for event in pg.event.get():
         # if the user quits the game the run game is set to false.
@@ -157,11 +149,11 @@ def main():
         # the key.get_pressed() method provides a true value while the key is pressed
         # removing the need for an event loop checking the event type. 
         # The makes the code more readable and easier to understand.
-        # https://stackoverflow.com/questions/66638465/whats-the-difference-betwen-pygame-key-get-pressed-and-event-type
+        # (https://stackoverflow.com/questions/66638465/whats-the-difference-betwen-pygame-key-get-pressed-and-event-type)
 
         # A sequence of boolean values is created to store the keys pressed by the user 
         # using the pygame.key.get_pressed() function. 
-        # http://www.pygame.org/docs/ref/key.html#pygame.key.get_pressed
+        # (http://www.pygame.org/docs/ref/key.html#pygame.key.get_pressed)
         keys_pressed = pg.key.get_pressed()
         # if the user is pressing the K_UP button the shooter is moved up
         shooter.move_up(keys_pressed)
@@ -186,8 +178,9 @@ def main():
             bullet.stop()
         # if the bullet collides with the enemy
         elif check_collision(bullet, enemy):
-            # the bullet is stopped and the score is incremented by the enemy's speed
+            # the bullet is stopped
             bullet.stop()
+            # and the score is incremented by the absolute multiple of the enemy's speeds
             score += abs(enemy.speed_x * enemy.speed_y)
             # the enemy is then relocated within the bounds of the display
             enemy.relocate(TOP_BOUNDARY, BOTTOM_BOUNDARY, LEFT_BOUNDARY, RIGHT_BOUNDARY)
