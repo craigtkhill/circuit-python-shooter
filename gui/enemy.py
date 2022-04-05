@@ -117,7 +117,7 @@ class Enemy:
 
     def relocate(self, top_bound, bottom_bound, left_bound, right_bound):
         """
-        Reclocates the enemy to a random position within the bounds of the screen
+        Relocates the enemy to a random position within the enemy's bounds of the screen
 
         Parameters
         ----------
