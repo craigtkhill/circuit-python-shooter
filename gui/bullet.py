@@ -96,7 +96,7 @@ class Bullet:
         Precondition: The bullet is not moving.
         """
         # if there is no bullet on the screen
-        if self.check_moving() == False:
+        if not self.check_moving():
         # the starting coordinates of the bullet are assigned
             self.__x = coordinates[0]
             self.__y = coordinates[1]
