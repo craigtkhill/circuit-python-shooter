@@ -28,7 +28,7 @@ def main():
     Function to run the game and handle the game logic.
     """
     # Objects in the game are initialised here. 
-
+    pg.init()
     # The display width and height and stored in variables using multiple assignment
     # (https://stackoverflow.com/questions/5495332/more-elegant-way-of-declaring-multiple-variables-at-the-same-time)
     DISPLAY_WIDTH, DISPLAY_HEIGHT = 900, 600
@@ -44,7 +44,6 @@ def main():
     bg = pg.image.load("blits/space.jpg")
 
     # a font object is created to display the score to the screen (https://www.geeksforgeeks.org/python-display-text-to-pygame-window/)
-    pg.init()
     pg.font.init()
     # and the font is set to Verdana size 50
     font = pg.font.SysFont('Verdana', 50)
