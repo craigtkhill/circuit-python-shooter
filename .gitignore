@@ -1,6 +1,5 @@
 .vscode/
 __pycache__/
-briefs
-report.docx
+briefs/
 report/
 
