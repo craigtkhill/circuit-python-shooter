@@ -1,7 +1,6 @@
 .vscode/
 __pycache__/
 briefs
-play.py
-test.ipynb
 report.docx
-~$report.docx
+report/
+
